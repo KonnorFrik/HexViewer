@@ -46,19 +46,19 @@ size_t string_write(string* dst, string* src) {
      * ret: count of writed symbol's */
 
     //check result size and realloc if needed
-    if (src->len >= dst->size) {
+    if (src->length >= dst->size) {
         if (!string_realloc(dst)) {
             // handle error 
         }
     }
 
     //copy symbol's from src to dst
-    //for (size_t ind = 0; ind < src->len; ++ind, ++count) {
+    //for (size_t ind = 0; ind < src->length; ++ind, ++count) {
         //dst->string[ind] = src->string[ind];
     //}
-    size_t count = src->len + 1; // +1 -> include '\0' for copy
+    size_t count = src->length + 1; // +1 -> include '\0' for copy
     strncpy(dst->string, src->string, count);
-    dst->len = count - 1; //only length of str, without '\0'
+    dst->length = count - 1; //only length of str, without '\0'
 
     return count;
 }
@@ -79,7 +79,7 @@ size_t str_write(string* dst, char* src) {
     }
 
     strncpy(dst->string, src, count);
-    dst->len = count - 1; //only length of str, without '\0'
+    dst->length = count - 1; //only length of str, without '\0'
 
     return count;
 }
@@ -92,15 +92,15 @@ size_t string_cat(string* dst, string* src) {
      * ret: count of writed symbol's */
 
     //check result size and realloc if needed
-    if ((dst->size + src->len) >= dst->size) {
+    if ((dst->size + src->length) >= dst->size) {
         if (!string_realloc(dst)) {
             // handle error 
         }
     }
 
-    size_t count = src->len + 1;
-    strncpy(dst->string + dst->len, src->string, count); 
-    dst->len += count - 1;
+    size_t count = src->length + 1;
+    strncpy(dst->string + dst->length, src->string, count); 
+    dst->length += count - 1;
 
     return count;
 }
@@ -114,14 +114,14 @@ size_t str_cat(string* dst, char* src) {
 
     size_t count = strlen(src) + 1;
 
-    if ((dst->len + count) >= dst->size) {
+    if ((dst->length + count) >= dst->size) {
         if (!string_realloc(dst)) {
             // handle error 
         }
     }
 
-    strncpy(dst->string + dst->len, src, count);
-    dst->len += count - 1;
+    strncpy(dst->string + dst->length, src, count);
+    dst->length += count - 1;
 
     return count;
 }

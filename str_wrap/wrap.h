@@ -20,6 +20,8 @@
 //TODO write test's
 //and gcovr
 
+#include <stddef.h>
+
 typedef struct {
     char* string;
     size_t length; // for len of current writed string

@@ -1,25 +1,33 @@
 .RECIPEPREFIX = >
 
-cmp = gcc
-cflags = -Wall -Werror -Wextra -std=c11
-LIBS = -lncurses
+CC = gcc
+CFLAGS = -std=c11 -Wall -Wextra -Werror
+LDLIBS = -lncurses
 
-SRC_DIRS = .
-SRC = $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c)) 
-OBJ = $(SRC:.c=.o)
+VIEWER_SRC_DIRS = .
+VIEWER_SRC := $(foreach dir, $(VIEWER_SRC_DIRS), $(wildcard $(dir)/*.c)) 
+VIEWER_OBJ := $(VIEWER_SRC:.c=.o)
+VIEWER_TARGET = hexviewer
 
+STRWRAP_SRC_DIRS = str_wrap
+STRWRAP_SRC := $(foreach dir, $(STRWRAP_SRC_DIRS), $(wildcard $(dir)/*.c)) 
+STRWRAP_OBJ := $(STRWRAP_SRC:.c=.o)
+STRWRAP_TARGET = strwraplib.a
 
-main: $(OBJ)
-> $(cmp) $(OBJ) $(LIBS) -o $@
+TARGETS = $(VIEWER_TARGET) $(STRWRAP_TARGET)
 
-%.o: %.c
-> $(cmp) $(cflags) -c $? -o $@
+all: $(TARGETS)
+
+$(VIEWER_TARGET): $(VIEWER_OBJ)
+
+$(STRWRAP_TARGET): $(STRWRAP_OBJ)
+> $(AR) rcs $@ $^
 
 
 clean:
-> rm -f $(OBJ)
+> rm -f $(VIEWER_OBJ)
+> rm -f $(STRWRAP_OBJ)
 
-show:
-> @echo $(SRC)
-> @echo $(OBJ)
-
+clean_all: clean
+> rm -f $(VIEWER_TARGET) 
+> rm -f $(STRWRAP_TARGET) 
