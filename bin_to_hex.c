@@ -41,7 +41,7 @@ void warr_to_hex(WINDOW* scr, unsigned char* arr, unsigned long count) {
     // while ind < size
     unsigned long address = 0;
 
-    while (address < size) {
+    while (address < count) {
         // print addr
         address++;
     }
