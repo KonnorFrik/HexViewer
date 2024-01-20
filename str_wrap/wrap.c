@@ -5,52 +5,55 @@
 #include <stdlib.h>
 
 
-static void safe_string_realloc(string* obj);
-static error_code string_realloc(string* obj);
-static size_t calc_new_size(size_t old_size);
+static void safe_string_realloc(string* obj, size_t new_size);
+static error_code string_realloc(string* obj, size_t new_size);
+//static size_t calc_new_size(size_t old_size);
 
-static error_code string_realloc(string* obj) {
-    /* Make realloc for string object
+static error_code string_realloc(string* obj, size_t new_size) {
+    /* Make realloc for string object to given size
      * 1:   obj - string object for realloc his buffer
      * ret: realloc_status - 0 = No realloc, 1 = Good realloc*/
 
-    size_t new_size = calc_new_size(obj->size);
     char* tmp = realloc(obj->string, new_size);
-    error_code realloc_status = NO_ERROR;
+    error_code realloc_status = REALLOC_ERROR;
 
     if (tmp) {
         obj->string = tmp;
         obj->size = new_size;
-        realloc_status = REALLOC_ERROR;
+        realloc_status = NO_ERROR;
     }
 
     return realloc_status;
 }
 
-static size_t calc_new_size(size_t old_size) {
-    /* Calculated new size with std-increase formula
-     * 1:   old_size - old buffer size for increase
-     * ret: new_size - new calculated size */
+//static size_t calc_new_size(size_t old_size) {
+    ///* Calculated new size with std-increase formula
+     //* 1:   old_size - old buffer size for increase
+     //* ret: new_size - new calculated size */
+//
+    //size_t new_len = 0;
+    //new_len = old_size + (old_size / 2);
+//
+    //if (old_size == 1) {
+        //new_len++;
+    //}
+    //
+    //return new_len;
+//}
 
-    size_t new_len = 0;
-    new_len = old_size + (old_size / 2);
-
-    if (old_size == 1) {
-        new_len++;
-    }
-    
-    return new_len;
-}
-
-static void safe_string_realloc(string* obj) {
+static void safe_string_realloc(string* obj, size_t new_size) {
     /* Check status code from 'string_realloc' and handle it
      * - Abort for any error 
      * 1:   obj - string object for realloc his buffer
      * ret: void */
 
+    if (obj->size == new_size) {
+        return;
+    }
+
     error_code status = NO_ERROR;
 
-    if ((status = string_realloc(obj)) != NO_ERROR) {
+    if ((status = string_realloc(obj, new_size)) != NO_ERROR) {
         // handle error 
         exit(status);
     }
@@ -82,7 +85,10 @@ string* string_create_from(char* str) {
      * ret: ptr to string object */
 
     string* obj = string_create();
-    str_write(obj, str);
+
+    if (str != 0) {
+        str_write(obj, str);
+    }
 
     return obj;
 }
@@ -113,7 +119,7 @@ size_t string_write(string* dst, string* src) {
 
     //check result size and realloc if needed
     if (src->length >= dst->size) {
-        safe_string_realloc(dst);
+        safe_string_realloc(dst, src->length + 1);
     }
 
     //copy symbol's from src to dst
@@ -126,7 +132,7 @@ size_t string_write(string* dst, string* src) {
 
     return count;
 }
-
+//TODO add handling of null in both ^ and v
 size_t str_write(string* dst, char* src) {
     /* Write all content from C-string src to string obj dst
      * - Overwrite lenght attribute
@@ -134,10 +140,17 @@ size_t str_write(string* dst, char* src) {
      * 2:   src - C-string read from
      * ret: count of writed symbol's */
 
-    size_t count = strlen(src) + 1; // +1 -> include '\0' for copy
+    size_t count = 0;
+
+    if (src != 0) {
+        count = strlen(src) + 1;
+
+    } else {
+        return 0;
+    }
 
     if (count >= dst->size) {
-        safe_string_realloc(dst);
+        safe_string_realloc(dst, count);
     }
 
     strncpy(dst->string, src, count);
@@ -155,7 +168,7 @@ size_t string_cat(string* dst, string* src) {
 
     //check result size and realloc if needed
     if ((dst->size + src->length) >= dst->size) {
-        safe_string_realloc(dst);
+        safe_string_realloc(dst, src->length + dst->size);
     }
 
     size_t count = src->length + 1;
@@ -175,7 +188,7 @@ size_t str_cat(string* dst, char* src) {
     size_t count = strlen(src) + 1;
 
     if ((dst->length + count) >= dst->size) {
-        safe_string_realloc(dst);
+        safe_string_realloc(dst, count);
     }
 
     strncpy(dst->string + dst->length, src, count);
