@@ -12,7 +12,13 @@
 #include "../../str_wrap/wrap.h"
 
 Suite* test_string_create();
-Suite* test_str_write();
+
 Suite* test_string_write();
+Suite* test_string_cat();
+
+Suite* test_str_write();
+Suite* test_str_cat();
+
+Suite* test_string_destroy();
 
 #endif

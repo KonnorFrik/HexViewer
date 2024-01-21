@@ -27,7 +27,6 @@ START_TEST(string_write_test_overwrite_empty_1) {
 END_TEST
 
 START_TEST(string_write_test_overwrite_str) {
-
     string* obj = string_create_from("Hello");
     string* str2 = string_create_from("edit");
 
@@ -78,6 +77,40 @@ START_TEST(string_write_test_overwrite_empty_2) {
 }
 END_TEST
 
+START_TEST(string_write_test_to_null) {
+    string* obj = 0;
+    string* str2 = string_create_from("Hello");
+
+    size_t writed = string_write(obj, str2);
+
+    //ck_assert_ptr_nonnull(obj);
+    //ck_assert_ptr_nonnull(obj->string);
+    //ck_assert_str_eq(obj->string, str2->string);
+    //ck_assert_uint_eq(obj->length, 5);
+    //ck_assert_uint_eq(obj->size, 6);
+    ck_assert_uint_eq(writed, 0);
+
+    string_destroy(obj);
+}
+END_TEST
+
+START_TEST(string_write_test_from_null) {
+    string* obj = string_create_from("");
+    string* str2 = 0;
+
+    size_t writed = string_write(obj, str2);
+
+    //ck_assert_ptr_nonnull(obj);
+    //ck_assert_ptr_nonnull(obj->string);
+    //ck_assert_str_eq(obj->string, str2->string);
+    //ck_assert_uint_eq(obj->length, 5);
+    //ck_assert_uint_eq(obj->size, 6);
+    ck_assert_uint_eq(writed, 0);
+
+    string_destroy(obj);
+}
+END_TEST
+
 Suite* test_string_write() {
     Suite* su = suite_create(NAME);
     TCase* test_case = tcase_create(NAME);
@@ -86,6 +119,8 @@ Suite* test_string_write() {
     tcase_add_test(test_case, string_write_test_overwrite_str);
     tcase_add_test(test_case, string_write_test_overwrite_with_empty);
     tcase_add_test(test_case, string_write_test_overwrite_empty_2);
+    tcase_add_test(test_case, string_write_test_to_null);
+    tcase_add_test(test_case, string_write_test_from_null);
 
     suite_add_tcase(su, test_case);
 
