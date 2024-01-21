@@ -7,12 +7,11 @@
 
 static void safe_string_realloc(string* obj, size_t new_size);
 static error_code string_realloc(string* obj, size_t new_size);
-//static size_t calc_new_size(size_t old_size);
 
 static error_code string_realloc(string* obj, size_t new_size) {
-    /* Make realloc for string object to given size
+    /* Make realloc for string object to given size and return status
      * 1:   obj - string object for realloc his buffer
-     * ret: realloc_status - 0 = No realloc, 1 = Good realloc*/
+     * ret: realloc_status - NO_ERROR or REALLOC_ERROR*/
 
     char* tmp = realloc(obj->string, new_size);
     error_code realloc_status = REALLOC_ERROR;
@@ -26,23 +25,8 @@ static error_code string_realloc(string* obj, size_t new_size) {
     return realloc_status;
 }
 
-//static size_t calc_new_size(size_t old_size) {
-    ///* Calculated new size with std-increase formula
-     //* 1:   old_size - old buffer size for increase
-     //* ret: new_size - new calculated size */
-//
-    //size_t new_len = 0;
-    //new_len = old_size + (old_size / 2);
-//
-    //if (old_size == 1) {
-        //new_len++;
-    //}
-    //
-    //return new_len;
-//}
-
 static void safe_string_realloc(string* obj, size_t new_size) {
-    /* Check status code from 'string_realloc' and handle it
+    /* Check status code from 'string_realloc' and handles it
      * - Abort for any error 
      * 1:   obj - string object for realloc his buffer
      * ret: void */
@@ -51,9 +35,7 @@ static void safe_string_realloc(string* obj, size_t new_size) {
         return;
     }
 
-    error_code status = NO_ERROR;
-
-    if ((status = string_realloc(obj, new_size)) != NO_ERROR) {
+    if (string_realloc(obj, new_size) != NO_ERROR) {
         // handle error 
         exit(status);
     }
@@ -62,52 +44,54 @@ static void safe_string_realloc(string* obj, size_t new_size) {
 string* string_create() {
     /* Create string and return pointer
      * - Just alloc memory for both: object and buffer
-     * - Abort if can't alloc memory
+     * - Abort if can't allocate memory
      * ret: ptr to string object */
 
     string* obj = calloc(1, sizeof(string));
+    obj->length = 0;
 
-    if (obj != 0) {
-        obj->string = calloc(1, sizeof(char));
+    if (!soft_is_null(obj)) {
         obj->size = 1;
+        obj->string = calloc(obj->size, sizeof(char));
     }
 
-    if (obj == 0 || obj->string == 0) {
-        exit(ALLOC_ERROR);
-    }
+    rough_is_null(obj);
+    rough_is_null(obj->string);
 
     return obj;
 }
 
 string* string_create_from(char* str) {
-    /* Create string from C-string and return pointer
+    /* Create string from C-string and return object
      * 1:   str - C-string for copy
      * ret: ptr to string object */
 
     string* obj = string_create();
 
-    if (str != 0) {
+    if (!soft_is_null(str)) {
         str_write(obj, str);
     }
 
     return obj;
 }
 
-void string_destroy(string* obj) {
-    /* Destroy string object correctly
+string* string_destroy(string* obj) {
+    /* Destroy string object correctly and return new address
      * 1:   obj - string object ptr for destroy
      * ret: void */
 
-    if (obj != 0) {
-        if (obj->string != 0) {
+    string* ret = obj;
+
+    if (!soft_is_null(obj)) {
+        if (!soft_is_null(obj->string)) {
             free(obj->string);
-            obj->string = 0;
-            obj->size = 0;
-            obj->length = 0;
         }
 
         free(obj);
+        ret = 0;
     }
+
+    return ret;
 }
 
 size_t string_write(string* dst, string* src) {
@@ -117,16 +101,22 @@ size_t string_write(string* dst, string* src) {
      * 2:   src - string object read from
      * ret: count of writed symbol's */
 
+    size_t count = 0;
+
+    if (soft_is_null(dst) ||
+        soft_is_null(src) ||
+        soft_is_null(dst->string) ||
+        soft_is_null(src->string)) {
+
+        return count;
+    }
+
     //check result size and realloc if needed
     if (src->length >= dst->size) {
         safe_string_realloc(dst, src->length + 1);
     }
 
-    //copy symbol's from src to dst
-    //for (size_t ind = 0; ind < src->length; ++ind, ++count) {
-        //dst->string[ind] = src->string[ind];
-    //}
-    size_t count = src->length + 1; // +1 -> include '\0' for copy
+    count = src->length + 1; // +1 -> include '\0' for copy
     strncpy(dst->string, src->string, count);
     dst->length = count - 1; //only length of str, without '\0'
 
@@ -142,12 +132,14 @@ size_t str_write(string* dst, char* src) {
 
     size_t count = 0;
 
-    if (src != 0) {
-        count = strlen(src) + 1;
+    if (soft_is_null(dst) ||
+        soft_is_null(dst->string) ||
+        soft_is_null(src)) {
 
-    } else {
-        return 0;
+        return count;
     }
+
+    count = strlen(src) + 1;
 
     if (count >= dst->size) {
         safe_string_realloc(dst, count);
@@ -166,14 +158,31 @@ size_t string_cat(string* dst, string* src) {
      * 2:   src - string object read from
      * ret: count of writed symbol's */
 
+    size_t count = 0;
+
+    if (soft_is_null(dst) ||
+        soft_is_null(src) ||
+        soft_is_null(dst->string) ||
+        soft_is_null(src->string)) {
+
+        return count;
+    }
+
+    count = src->length + 1;
+
+    if (count == 1) {
+        count = 0;
+    }
+
     //check result size and realloc if needed
     if ((dst->size + src->length) >= dst->size) {
         safe_string_realloc(dst, src->length + dst->size);
     }
 
-    size_t count = src->length + 1;
-    strncpy(dst->string + dst->length, src->string, count); 
-    dst->length += count - 1;
+    if (count) {
+        strncpy(dst->string + dst->length, src->string, count); 
+        dst->length += count - 1;
+    }
 
     return count;
 }
@@ -185,14 +194,29 @@ size_t str_cat(string* dst, char* src) {
      * 2:   src - C-string read from
      * ret: count of writed symbol's */
 
-    size_t count = strlen(src) + 1;
+    size_t count = 0;
 
-    if ((dst->length + count) >= dst->size) {
-        safe_string_realloc(dst, count);
+    if (soft_is_null(dst) ||
+        soft_is_null(dst->string) ||
+        soft_is_null(src)) {
+
+        return count;
+    }
+    
+    count = strlen(src) + 1;
+
+    if (count == 1) {
+        count = 0;
     }
 
-    strncpy(dst->string + dst->length, src, count);
-    dst->length += count - 1;
+    if ((dst->length + count) >= dst->size) {
+        safe_string_realloc(dst, dst->length + count);
+    }
+
+    if (count) {
+        strncpy(dst->string + dst->length, src, count);
+        dst->length += count - 1;
+    }
 
     return count;
 }

@@ -31,7 +31,7 @@ typedef struct {
 
 string* string_create();
 string* string_create_from(char* str);
-void string_destroy(string* obj);
+string* string_destroy(string* obj);
 
 size_t string_write(string* dst, string* src);
 size_t str_write(string* dst, char* src);
