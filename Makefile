@@ -71,12 +71,25 @@ clean:
 > rm -f $(STRWRAP_OBJ)
 > rm -f $(STRWRAP_TEST_OBJ)
 > rm -f $(ERR_HANDLER_OBJ)
-> rm -f $(foreach dir, $(VIEWER_SRC_DIRS) $(STRWRAP_SRC_DIRS) $(STRWRAP_TEST_SRC_DIRS), $(wildcard ./$(dir)/*.gcda))
-> rm -f $(foreach dir, $(VIEWER_SRC_DIRS) $(STRWRAP_SRC_DIRS) $(STRWRAP_TEST_SRC_DIRS), $(wildcard ./$(dir)/*.gcno))
+> rm -f $(FORMATER_OBJ)
+> rm -f $(foreach dir, $(VIEWER_SRC_DIRS)\
+ 					   $(FORMATER_TEST_SRC_DIRS)\
+ 					   $(FORMATER_SRC_DIRS)\
+	                   $(STRWRAP_SRC_DIRS)\
+					   $(STRWRAP_TEST_SRC_DIRS),\
+					   $(wildcard ./$(dir)/*.gcda))
+
+> rm -f $(foreach dir, $(VIEWER_SRC_DIRS)\
+ 					   $(FORMATER_TEST_SRC_DIRS)\
+ 					   $(FORMATER_SRC_DIRS)\
+           	           $(STRWRAP_SRC_DIRS)\
+	                   $(STRWRAP_TEST_SRC_DIRS),\
+					   $(wildcard ./$(dir)/*.gcno))
 
 clean_all: clean
 > rm -f $(VIEWER_TARGET) 
 > rm -f $(STRWRAP_TARGET) 
 > rm -f $(STRWRAP_TEST_NAME) 
+> rm -f $(FORMATER_TEST_NAME) 
 > rm -f $(wildcard ./*.html)
 > rm -f $(wildcard ./*.css)
