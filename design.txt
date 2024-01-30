@@ -1,0 +1,36 @@
+Idea:
+    Hex viewer - programm for print represented byte's from file as hexadecimal in stdout
+    Read given file's or stdin and print it content converted to hex to stdout
+
+
+Byte representation:
+    byte's writed as 2 symbol's (ex: "0F") in upper or lower case
+    Output format's: 
+        C-format (ex: "0f")
+        Python-format (ex: "\x0f")
+        (Can be added any pre-/post-fix)
+
+Row format:
+    [ADDRESS] [HEX BYTES] [DECODED BYTES]
+
+    ADDRESS:
+        For default: have 4 symbol's (ex: "0010") and ':' at end. Count of symbols can be changed by cmd flags
+
+    HEX BYTES:
+        For default: 16 byte's in choosen format per row separated with ' ' symbol. Count and delimited can be changed by cmd flags
+
+    DECODED BYTES:
+        For default: 16 symbol's per row without any delimiter
+        If byte can't be decoded to printable char, it will be replaced with '.' symbol. Symbol for replace can be changed by cmd flags
+
+Page format:
+    [OFFSETS HEADER] '\n' [ROW]
+
+    OFFSETS HEADER:
+        Number's in hexadecimal default format (apply only 'bytes-count-per-row' and case) from 0 to 'bytes-count-per-row'
+        May be printed once at begin or print every N row's. Count of row's can be changed by cmd flags
+
+
+Additional modules:
+    Wrap for string's
+        - Write to given string with realloc if need
