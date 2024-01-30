@@ -7,7 +7,9 @@ CFLAGS = -std=c11 -Wall -Wextra #-Werror
 LDLIBS = -lncurses `pkg-config --cflags --libs check` -lc
 TEST_FLAGS = `pkg-config --cflags --libs check` -O0 -lc -lm -lgcov --coverage
 
-VIEWER_SRC_DIRS = .
+COMMON_TEST_SRC_DIR = ./tests
+
+VIEWER_SRC_DIRS = . #formater str_wrap err_handle
 VIEWER_SRC := $(foreach dir, $(VIEWER_SRC_DIRS), $(wildcard $(dir)/*.c))
 VIEWER_OBJ := $(VIEWER_SRC:.c=.o)
 VIEWER_TARGET = hexviewer
@@ -22,10 +24,19 @@ STRWRAP_SRC := $(foreach dir, $(STRWRAP_SRC_DIRS), $(wildcard $(dir)/*.c))
 STRWRAP_OBJ := $(STRWRAP_SRC:.c=.o)
 STRWRAP_TARGET = strwraplib.a
 
-STRWRAP_TEST_SRC_DIRS = ./tests/string_tests 
+STRWRAP_TEST_SRC_DIRS = ./tests/string_tests $(COMMON_TEST_SRC_DIR)
 STRWRAP_TEST_SRC := $(foreach dir, $(STRWRAP_TEST_SRC_DIRS), $(wildcard $(dir)/*.c))
 STRWRAP_TEST_OBJ := $(STRWRAP_TEST_SRC:.c=.o)
 STRWRAP_TEST_NAME = ./tests/string_tests/string_tests
+
+FORMATER_SRC_DIRS = formater
+FORMATER_SRC = $(foreach dir, $(FORMATER_SRC_DIRS), $(wildcard $(dir)/*.c))
+FORMATER_OBJ = $(FORMATER_SRC:.c=.o)
+
+FORMATER_TEST_SRC_DIRS = ./tests/formater_test $(COMMON_TEST_SRC_DIR)
+FORMATER_TEST_SRC = $(foreach dir, $(FORMATER_TEST_SRC_DIRS), $(wildcard $(dir)/*.c))
+FORMATER_TEST_NAME = ./tests/formater_test/format_tests
+
 
 REPORT = REPORT.html
 
@@ -43,14 +54,17 @@ gcov_report: test
 > @printf "\n\tREPORT FILE FOR OPEN: '\033[38;5;46m$(REPORT)\033[0m'\n"
 
 ################ --- TESTS --- ####################
-test: $(STRWRAP_TEST_NAME)
+test: compile_all_tests
 > $(STRWRAP_TEST_NAME)
+> $(FORMATER_TEST_NAME)
 
-compile_all_tests: $(STRWRAP_TEST_NAME)
+compile_all_tests: $(STRWRAP_TEST_NAME) $(FORMATER_TEST_NAME)
 
 $(STRWRAP_TEST_NAME): $(STRWRAP_TEST_SRC) $(STRWRAP_SRC) $(ERR_HANDLER_SRC)
 > $(CC) $(STRWRAP_TEST_SRC) $(STRWRAP_SRC) $(ERR_HANDLER_SRC) $(TEST_FLAGS) -o $@
 
+$(FORMATER_TEST_NAME): $(FORMATER_SRC) $(FORMATER_TEST_SRC) $(STRWRAP_SRC) $(ERR_HANDLER_SRC)
+> $(CC) $(FORMATER_SRC) $(FORMATER_TEST_SRC) $(STRWRAP_SRC) $(ERR_HANDLER_SRC) $(TEST_FLAGS) -o $@
 
 clean:
 > rm -f $(VIEWER_OBJ)
