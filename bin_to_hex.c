@@ -1,9 +1,40 @@
-#include <ncurses.h>
 #include "bin_to_hex.h"
+#include <stdint.h>
 
-typedef struct {
+typedef enum _byte_type {
+    no-type = 0
+    c-type,
+    py-type,
+} byte_type;
+
+typedef enum _addr_type {
+    hex-type = 1,
+    dec-type,
+} addr_type;
+
+typedef struct _byte_format {
     /* Describe which format use for print byte, indent after byte*/
-} ByteFormat;
+    uint8_t is_upper: 1;
+    uint8_t reserve: 7;
+    byte_type type;
+} byte_format;
+
+typedef struct _row_format {
+    uint8_t address_len;    // 4 default
+    addr_type addres_type ; // hex default
+
+    uint8_t bytes_len;   // 16 default
+    char bytes_delimiter; // ' '
+
+    //uint8_t symbs_len;   // as bytes_len
+    char std_symbol;     // '.'
+} row_format;
+
+typedef struct _page_format {
+    uint8_t is_show_header: 1;
+    uint8_t reserve: 7;
+    uint32_t header_every; // 0 - print once, n - print if is_show
+} page_format;
 
 static char decode_symb(unsigned char symb);
 
@@ -19,33 +50,3 @@ static char decode_symb(unsigned char symb) {
     return result;
 }
 
-void wrow_to_hex(WINDOW* src, unsigned char* arr, unsigned long count) {
-    /* Print next 'count' bytes from arr to given screnn 'scr' in hex 
-     * 1:   scr - WINDOW object ptr for print on 
-     * 2:   arr - array of bytes for print it
-     * 3:   count - count for print
-     * ret: void */
-
-    //just print row in hex
-    //No print address
-    //No print \n
-}
-
-void warr_to_hex(WINDOW* scr, unsigned char* arr, unsigned long count) {
-    /* Print 'count' bytes from arr of bytes to given screnn 'scr' in hex 
-     * 1:   scr - WINDOW object ptr for print on 
-     * 2:   arr - array of bytes for print it
-     * 3:   count - count for print
-     * ret: void */
-
-    // while ind < size
-    unsigned long address = 0;
-
-    while (address < count) {
-        // print addr
-        address++;
-    }
-    // print byte's in hex
-    // print aign if need
-    // print decoded symb's
-}
