@@ -36,7 +36,7 @@ $(STRWRAP_TARGET): $(STRWRAP_OBJ) $(ERR_HANDLER_OBJ)
 
 
 ################ --- TESTS --- ####################
-all_tests: $(STRWRAP_TEST_NAME)
+test: $(STRWRAP_TEST_NAME)
 > $(STRWRAP_TEST_NAME)
 
 compile_all_tests: $(STRWRAP_TEST_NAME)
