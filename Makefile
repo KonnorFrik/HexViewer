@@ -55,8 +55,8 @@ gcov_report: test
 
 ################ --- TESTS --- ####################
 test: compile_all_tests
-> $(STRWRAP_TEST_NAME)
-> $(FORMATER_TEST_NAME)
+> @$(STRWRAP_TEST_NAME)
+> @$(FORMATER_TEST_NAME)
 
 compile_all_tests: $(STRWRAP_TEST_NAME) $(FORMATER_TEST_NAME)
 
@@ -77,14 +77,14 @@ clean:
  					   $(FORMATER_SRC_DIRS)\
 	                   $(STRWRAP_SRC_DIRS)\
 					   $(STRWRAP_TEST_SRC_DIRS),\
-					   $(wildcard ./$(dir)/*.gcda))
+					   $(wildcard $(dir)/*.gcda))
 
 > rm -f $(foreach dir, $(VIEWER_SRC_DIRS)\
  					   $(FORMATER_TEST_SRC_DIRS)\
  					   $(FORMATER_SRC_DIRS)\
            	           $(STRWRAP_SRC_DIRS)\
 	                   $(STRWRAP_TEST_SRC_DIRS),\
-					   $(wildcard ./$(dir)/*.gcno))
+					   $(wildcard $(dir)/*.gcno))
 
 clean_all: clean
 > rm -f $(VIEWER_TARGET) 
