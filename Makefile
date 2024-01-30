@@ -39,8 +39,7 @@ $(STRWRAP_TARGET): $(STRWRAP_OBJ) $(ERR_HANDLER_OBJ)
 > $(AR) rcs $@ $^
 
 gcov_report: test
-#> $(LOCAL_GCOVR) -f .*\.c -f .*/.*\.c --html --html-details -o $(REPORT) 
-> $(LOCAL_GCOVR) $(STRWRAP_TEST_SRC) --html --html-details -o $(REPORT) 
+> $(LOCAL_GCOVR) -f err_.*\.c -f str_.*\.c -f hex_.*\.c --html --html-details -o $(REPORT) 
 > @printf "\n\tREPORT FILE FOR OPEN: '\033[38;5;46m$(REPORT)\033[0m'\n"
 
 ################ --- TESTS --- ####################
