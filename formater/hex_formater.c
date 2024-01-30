@@ -77,3 +77,4 @@ void destroy_page_format(page_format* obj) {
         free(obj);
     }
 }
+

@@ -13,3 +13,4 @@ void destroy_page_format(page_format* obj);
  * ret: void */
 
 #endif
+
