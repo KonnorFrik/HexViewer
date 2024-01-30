@@ -37,16 +37,11 @@ static void safe_string_realloc(string* obj, size_t new_size) {
 
     if (string_realloc(obj, new_size) != NO_ERROR) {
         // handle error 
-        exit(status);
+        exit(REALLOC_ERROR);
     }
 }
 
 string* string_create() {
-    /* Create string and return pointer
-     * - Just alloc memory for both: object and buffer
-     * - Abort if can't allocate memory
-     * ret: ptr to string object */
-
     string* obj = calloc(1, sizeof(string));
     obj->length = 0;
 
@@ -62,10 +57,6 @@ string* string_create() {
 }
 
 string* string_create_from(char* str) {
-    /* Create string from C-string and return object
-     * 1:   str - C-string for copy
-     * ret: ptr to string object */
-
     string* obj = string_create();
 
     if (!soft_is_null(str)) {
@@ -76,10 +67,6 @@ string* string_create_from(char* str) {
 }
 
 string* string_destroy(string* obj) {
-    /* Destroy string object correctly and return new address
-     * 1:   obj - string object ptr for destroy
-     * ret: void */
-
     string* ret = obj;
 
     if (!soft_is_null(obj)) {
@@ -95,12 +82,6 @@ string* string_destroy(string* obj) {
 }
 
 size_t string_write(string* dst, string* src) {
-    /* Write all content from string obj src to string obj dst
-     * - Overwrite lenght attribute
-     * 1:   dst - string object for write in
-     * 2:   src - string object read from
-     * ret: count of writed symbol's */
-
     size_t count = 0;
 
     if (soft_is_null(dst) ||
@@ -122,14 +103,8 @@ size_t string_write(string* dst, string* src) {
 
     return count;
 }
-//TODO add handling of null in both ^ and v
-size_t str_write(string* dst, char* src) {
-    /* Write all content from C-string src to string obj dst
-     * - Overwrite lenght attribute
-     * 1:   dst - string object for write in
-     * 2:   src - C-string read from
-     * ret: count of writed symbol's */
 
+size_t str_write(string* dst, char* src) {
     size_t count = 0;
 
     if (soft_is_null(dst) ||
@@ -152,12 +127,6 @@ size_t str_write(string* dst, char* src) {
 }
 
 size_t string_cat(string* dst, string* src) {
-    /* Concatinate content from string obj src to string obj dst
-     * - Adding lenght for dst object
-     * 1:   dst - string object for concatinate with
-     * 2:   src - string object read from
-     * ret: count of writed symbol's */
-
     size_t count = 0;
 
     if (soft_is_null(dst) ||
@@ -188,12 +157,6 @@ size_t string_cat(string* dst, string* src) {
 }
 
 size_t str_cat(string* dst, char* src) {
-    /* Concatinate content from C-string src to string obj dst
-     * - Adding lenght for dst object
-     * 1:   dst - string object for concatinate with
-     * 2:   src - C-string read from
-     * ret: count of writed symbol's */
-
     size_t count = 0;
 
     if (soft_is_null(dst) ||
