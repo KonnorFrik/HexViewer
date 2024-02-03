@@ -10,7 +10,7 @@ TEST_FLAGS = `pkg-config --cflags --libs check` -O0 -lc -lm -lgcov --coverage
 COMMON_TEST_SRC_DIR = ./tests
 
 VIEWER_SRC_DIRS = . formater str_wrap err_handle views
-VIEWER_SRC := $(foreach dir, $(VIEWER_SRC_DIRS), $(wildcard $(dir)/hex_*.c))
+VIEWER_SRC := $(foreach dir, $(VIEWER_SRC_DIRS), $(wildcard $(dir)/*.c))
 VIEWER_OBJ := $(VIEWER_SRC:.c=.o)
 VIEWER_TARGET = hexviewer
 
