@@ -17,9 +17,6 @@
  * All func's realloc memory for string's object buffer if not enough current size
  */
 
-//TODO write test's
-//and gcovr
-
 #include <stddef.h>
 
 typedef struct {

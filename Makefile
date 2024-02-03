@@ -9,8 +9,8 @@ TEST_FLAGS = `pkg-config --cflags --libs check` -O0 -lc -lm -lgcov --coverage
 
 COMMON_TEST_SRC_DIR = ./tests
 
-VIEWER_SRC_DIRS = . #formater str_wrap err_handle
-VIEWER_SRC := $(foreach dir, $(VIEWER_SRC_DIRS), $(wildcard $(dir)/*.c))
+VIEWER_SRC_DIRS = . formater str_wrap err_handle views
+VIEWER_SRC := $(foreach dir, $(VIEWER_SRC_DIRS), $(wildcard $(dir)/hex_*.c))
 VIEWER_OBJ := $(VIEWER_SRC:.c=.o)
 VIEWER_TARGET = hexviewer
 
@@ -44,7 +44,8 @@ TARGETS = $(VIEWER_TARGET) $(STRWRAP_TARGET)
 
 all: $(TARGETS)
 
-$(VIEWER_TARGET): $(VIEWER_OBJ)
+$(VIEWER_TARGET): $(VIEWER_OBJ) $(STRWRAP_TARGET)
+> $(CC) $(VIEWER_OBJ) --static $(STRWRAP_TARGET) $(CFLAGS) -o $@
 
 $(STRWRAP_TARGET): $(STRWRAP_OBJ) $(ERR_HANDLER_OBJ)
 > $(AR) rcs $@ $^
