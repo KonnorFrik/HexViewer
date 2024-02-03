@@ -183,3 +183,24 @@ size_t str_cat(string* dst, char* src) {
 
     return count;
 }
+
+//void string_full_destroy(string** obj) {
+    ///* Destroy string object correctly and return new address
+     //* 1:   obj - string object ptr for destroy
+     //* ret: void */
+//
+    //if (soft_is_null(obj)) {
+        //return;
+    //}
+//
+    //if (!soft_is_null(*obj)) {
+        //if (!soft_is_null((*obj)->string)) {
+            //free((*obj)->string);
+            //(*obj)->string = 0;
+            //(*obj)->size = 0;
+            //(*obj)->length = 0;
+        //}
+//
+        //free(*obj);
+    //}
+//}
