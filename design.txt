@@ -36,6 +36,8 @@ Page format:
         [CHUNK] - n count of row's which can be printed on screen
                   chunk start at X byte in file from start
 
+NOTES:
+    - All modifications apllyed right before printing (not after read, store, etc...)
 
 Additional modules:
     Wrap for string's
