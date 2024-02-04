@@ -1,6 +1,7 @@
 #include "views/views.h"
 #include "formater/hex_formater.h"
 #include "str_wrap/wrap.h"
+#include "data/readers.h"
 
 #include <stdio.h>
 #include <assert.h>
@@ -34,8 +35,10 @@ void print_file(char* filename, page_format* format) {
 }
 
 int main() {
-    char* filename = "hexviewer";
+    char* filename = "pattern_design.txt";
     page_format* format = page_format_create();
+    format->byte_format.type = py_type;
+
     print_file(filename, format);
     page_format_destroy(format);
     return 0;
