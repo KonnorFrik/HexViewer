@@ -3,7 +3,7 @@
 //#include <string.h>
 
 void print_address(uint64_t address, page_format* format) {
-    printf("%4lx", address); 
+    printf("%04lx", address); 
 }
 
 void print_byte_row(page_format* format) {
