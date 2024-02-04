@@ -7,6 +7,7 @@ typedef enum _byte_type {
     no_type = 0,
     c_type,
     py_type,
+    type_end, // not for users
 } byte_type;
 
 typedef enum _addr_type {
