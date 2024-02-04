@@ -21,13 +21,13 @@ void print_file(char* filename, page_format* format) {
 
     while (read_row(file, format) == format->row_format.bytes_len) {
         // TODO make smthng with it '|'
-        printf("|  ");
+        printf("|");
         print_address(address, format);
         printf("  |  ");
         print_byte_row(format);
         printf("  |  ");
         decode_print_row(format);
-        printf("  |\n");
+        printf("|\n");
         address += format->row_format.bytes_len;
     }
 
