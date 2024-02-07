@@ -34,10 +34,12 @@ void print_file(char* filename, page_format* format) {
     fclose(file);
 }
 
-int main() {
+//TODO mb compile all modules in one shared obj
+int main(int argc, char* const* argv) {
     char* filename = "pattern_design.txt";
-    page_format* format = page_format_create();
-    format->byte_format.type = py_type;
+    page_format* format = 0;
+    format = page_format_create();
+    page_format_init(argc, argv, format);
 
     print_file(filename, format);
     page_format_destroy(format);
