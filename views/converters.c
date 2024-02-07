@@ -41,7 +41,7 @@ static string* convert_byte_py_type(uint8_t symb) {
     return obj;
 }
 
-string* find_converter(byte_type search, uint8_t byte) {
+string* convert_byte_to_str(byte_type search, uint8_t byte) {
     string* result = 0;
     int index = 0;
 
