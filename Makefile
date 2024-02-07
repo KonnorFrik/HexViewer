@@ -37,12 +37,14 @@ FORMATER_TEST_SRC_DIRS = ./tests/formater_test $(COMMON_TEST_SRC_DIR)
 FORMATER_TEST_SRC = $(foreach dir, $(FORMATER_TEST_SRC_DIRS), $(wildcard $(dir)/*.c))
 FORMATER_TEST_NAME = ./tests/formater_test/format_tests
 
-
 REPORT = REPORT.html
 
 TARGETS = $(VIEWER_TARGET) $(STRWRAP_TARGET)
 
+
 all: $(TARGETS)
+
+rebuild: clean_all all
 
 $(VIEWER_TARGET): $(VIEWER_OBJ) $(STRWRAP_TARGET)
 > $(CC) $(VIEWER_OBJ) --static $(STRWRAP_TARGET) $(CFLAGS) -o $@
