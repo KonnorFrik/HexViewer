@@ -1,6 +1,7 @@
 #include "views.h"
 #include <stdio.h>
-#include <stdlib.h>
+//#include <stdlib.h>
+#include <ctype.h>
 
 static void apply_byte_format(string* byte_str, page_format* format);
 /* Apply output rules from page_format obj for converted str
@@ -35,6 +36,8 @@ void print_byte_row(page_format* format) {
         printf("%s%c",
                 byte_str->string,
                 format->row_format.bytes_delimiter);
+
+        string_destroy(byte_str);
     }
 }
 
