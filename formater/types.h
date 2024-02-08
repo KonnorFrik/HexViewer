@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define DEFAULT_ROW_LEN 16
+
 typedef enum _byte_type {
     no_type = 0,
     c_type,

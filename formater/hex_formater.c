@@ -65,7 +65,7 @@ static void page_format_init_default(page_format* obj) {
     // [ROW]
     obj->row_format.address_len = 4;
     obj->row_format.address_type = hex_type;
-    obj->row_format.bytes_len = 16;
+    obj->row_format.bytes_len = DEFAULT_ROW_LEN;
     obj->row_format.bytes_delimiter = ' ';
     obj->row_format.std_symbol = '.';
 
@@ -77,14 +77,12 @@ static void page_format_init_default(page_format* obj) {
 page_format* page_format_create() {
     page_format* obj = 0;
     obj = calloc(1, sizeof(page_format));
+    assert(obj != 0 && "Can't allocate memory");
 
-    if (!soft_is_null(obj)) {
-        obj->current_row = calloc(obj->row_format.bytes_len,
+    obj->current_row = calloc(DEFAULT_ROW_LEN,
                                   sizeof(uint8_t));
-    }
 
-    assert(obj && "Can't allocate memory");
-    assert(obj->current_row && "Can't allocate memory");
+    assert(obj->current_row != 0 && "Can't allocate memory");
 
     // default init
     page_format_init_default(obj);
@@ -94,6 +92,10 @@ page_format* page_format_create() {
 
 void page_format_destroy(page_format* obj) {
     if (!soft_is_null(obj)) {
+        if (!soft_is_null(obj->current_row)) {
+            free(obj->current_row);
+        }
+
         free(obj);
     }
 }
