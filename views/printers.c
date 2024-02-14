@@ -1,6 +1,6 @@
 #include "views.h"
 #include <stdio.h>
-//#include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 
 static void apply_byte_format(string* byte_str, page_format* format);
@@ -24,7 +24,33 @@ static void apply_byte_format(string* byte_str, page_format* format) {
 }
 
 void print_address(uint64_t address, page_format* format) {
-    printf("%04lx", address); 
+    char fmt[37] = {0};
+
+    if (format->row_format.address_len < 30 &&
+        format->row_format.address_len > 0) {
+        sprintf(fmt, "%%0%dl", format->row_format.address_len);
+
+    } else {
+        sprintf(fmt, "%%04l");
+    }
+
+    size_t current_fmt_len = strlen(fmt);
+
+    switch (format->row_format.address_type) {
+        case hex_type:
+            sprintf(fmt + current_fmt_len, "x");
+            break;
+
+        case dec_type:
+            sprintf(fmt + current_fmt_len, "u");
+            break;
+
+        case oct_type:
+            sprintf(fmt + current_fmt_len, "o");
+            break;
+    }
+
+    printf(fmt, address); 
 }
 
 void print_byte_row(page_format* format) {
