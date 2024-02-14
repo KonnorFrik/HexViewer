@@ -16,23 +16,28 @@ void print_file(char* filename, page_format* format);
 
 void print_file(char* filename, page_format* format) {
     FILE* file = fopen(filename, "r");
-    assert(file && "Can't open file");
+    //assert(file && "Can't open file");
 
-    uint64_t address = 0;
+    if (file != 0) {
+        uint64_t address = 0;
 
-    while (read_row(file, format) == format->row_format.bytes_len) {
-        // TODO make smthng with it '|'
-        printf("|");
-        print_address(address, format);
-        printf("  |  ");
-        print_byte_row(format);
-        printf("  |  ");
-        decode_print_row(format);
-        printf("|\n");
-        address += format->row_format.bytes_len;
+        while (read_row(file, format) == format->row_format.bytes_len) {
+            // TODO make smthng with it '|'
+            printf("|");
+            print_address(address, format);
+            printf("  |  ");
+            print_byte_row(format);
+            printf("  |  ");
+            decode_print_row(format);
+            printf("|\n");
+            address += format->row_format.bytes_len;
+        }
+
+        fclose(file);
+
+    } else {
+        fprintf(stderr, "File: '%s' can't be opened\n", filename);
     }
-
-    fclose(file);
 }
 
 //TODO mb compile all modules in one shared obj
