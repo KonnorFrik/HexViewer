@@ -3,6 +3,7 @@
 #include "str_wrap/wrap.h"
 #include "data/readers.h"
 
+#include <getopt.h>
 #include <stdio.h>
 #include <assert.h>
 
@@ -36,12 +37,18 @@ void print_file(char* filename, page_format* format) {
 
 //TODO mb compile all modules in one shared obj
 int main(int argc, char* const* argv) {
-    char* filename = "pattern_design.txt";
     page_format* format = 0;
     format = page_format_create();
     page_format_init(argc, argv, format);
 
-    print_file(filename, format);
+    if (optind >= argc) {
+        fprintf(stderr, "No filename given for read\n");
+    }
+
+    for (int index = optind; index < argc; ++index) {
+        print_file(argv[index], format);
+    }
+
     page_format_destroy(format);
     return 0;
 }
