@@ -10,9 +10,18 @@
 #define NO_ARG 0
 #define REQ_ARG 1
 
+#define BYTE_PY_TYPE "python"
+#define BYTE_PY_TYPE_SHORT "py"
+
+#define OCT_ADDR_TYPE "oct"
+#define DEC_ADDR_TYPE "dec"
+
 enum _cmd_flags {
     fake = 0,
     upper_case_flag,
+    byte_type_flag,
+    address_len_flag,
+    address_type_flag,
 };
 
 static void page_format_init_default(page_format* obj);
@@ -29,6 +38,9 @@ void page_format_init(int argc, char* const* argv, page_format* obj) {
     const char* short_names = "";
     const struct option long_names[] = {
         {"upper-byte", NO_ARG, &cmd_flag, upper_case_flag},
+        {"byte-type", REQ_ARG, &cmd_flag, byte_type_flag},
+        {"address-len", REQ_ARG, &cmd_flag, address_len_flag},
+        {"address-type", REQ_ARG, &cmd_flag, address_type_flag},
         {0, 0, 0, 0}
     };
 
@@ -46,15 +58,36 @@ void page_format_init(int argc, char* const* argv, page_format* obj) {
                 obj->byte_format.is_upper = 1;
                 break;
 
+            case byte_type_flag:
+                if (strcmp(optarg, BYTE_PY_TYPE) == 0 ||
+                    strcmp(optarg, BYTE_PY_TYPE_SHORT) == 0) {
+                    obj->byte_format.type = py_type;
+                } 
+                break;
+
+            case address_len_flag:
+                obj->row_format.address_len = strtol(optarg, 0, 10);
+                break;
+
+            case address_type_flag:
+                if (strcmp(optarg, DEC_ADDR_TYPE) == 0) {
+                    obj->row_format.address_type = dec_type;
+
+                } else if (strcmp(optarg, OCT_ADDR_TYPE) == 0) {
+                    obj->row_format.address_type = oct_type;
+                }
+                break;
+
             case '?':
-                printf("Unknown argument, need exit\n");
+                fprintf(stderr, "Unknown argument, need exit\n");
                 break;
 
             default:
-                printf("Unknown error\n");
+                fprintf(stderr, "Unknown error\n");
                 break;
         }
     }
+    //TODO postinit for allocate byte_array
 }
 
 static void page_format_init_default(page_format* obj) {
