@@ -34,10 +34,11 @@ void print_address(uint64_t address, page_format* format);
  * 2:   format - page_format object ptr with rules
  * ret: void */
 
-string* convert_byte_to_str(byte_type search, uint8_t byte);
+string* convert_byte_to_str(byte_type search, uint8_t byte, string* buffer_out);
 /* Find converter for given type and run it with given arg
  * 1:   search - converter type for search 
  * 2:   byte - data for convert
+ * 3:   buffer - string object ptr for write result
  * ret: byte_str - string object ptr */
 
 #endif

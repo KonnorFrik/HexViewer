@@ -54,8 +54,10 @@ void print_address(uint64_t address, page_format* format) {
 }
 
 void print_byte_row(page_format* format) {
+    string* byte_str = string_create();
     for (uint8_t count = 0; count < format->row_format.bytes_len; ++count) {
-        string* byte_str = convert_byte_to_str(format->byte_format.type, format->current_row[count]);
+        //string* byte_str = convert_byte_to_str(format->byte_format.type, format->current_row[count]);
+        convert_byte_to_str(format->byte_format.type, format->current_row[count], byte_str);
 
         apply_byte_format(byte_str, format);
 
@@ -63,8 +65,10 @@ void print_byte_row(page_format* format) {
                 byte_str->string,
                 format->row_format.bytes_delimiter);
 
-        string_destroy(byte_str);
+        string_clear(byte_str);
     }
+
+    string_destroy(byte_str);
 }
 
 void decode_print_row(page_format* format) {
