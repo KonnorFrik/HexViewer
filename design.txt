@@ -59,4 +59,4 @@ Setting's and flags:
 
 
 [PAGE]
-- Print header every n row's (--header-every ...) min: 1, max: uint32_t
+- Print header every n row's (--header-every ...) min: 0, max: uint32_t
