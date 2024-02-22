@@ -18,6 +18,7 @@
 
 enum _cmd_flags {
     fake = 0,
+    help_flag,
     upper_case_flag,
     byte_type_flag,
     address_len_flag,
@@ -41,6 +42,7 @@ void page_format_init(int argc, char* const* argv, page_format* obj) {
         {"byte-type", REQ_ARG, &cmd_flag, byte_type_flag},
         {"address-len", REQ_ARG, &cmd_flag, address_len_flag},
         {"address-type", REQ_ARG, &cmd_flag, address_type_flag},
+        {"help", NO_ARG, &cmd_flag, help_flag},
         {0, 0, 0, 0}
     };
 
@@ -53,7 +55,18 @@ void page_format_init(int argc, char* const* argv, page_format* obj) {
         //printf("optarg:     %s\n", optarg);
         //printf("optind:     %d\n", optind);
         //printf("\n");
+        //switch (symb) {
+            //case 'h':
+                //printf("SHORT HELP FLAG\n");
+                //obj->show_help = 1;
+                //break;
+        //}
+
         switch (cmd_flag) {
+            case help_flag:
+                obj->show_help = 1;
+                break;
+
             case upper_case_flag:
                 obj->byte_format.is_upper = 1;
                 break;

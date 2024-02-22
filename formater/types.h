@@ -38,7 +38,8 @@ typedef struct _row_format {
 
 typedef struct _page_format {
     uint8_t is_show_header: 1;
-    uint8_t reserve: 7;
+    uint8_t show_help: 1;
+    uint8_t reserve: 6;
     uint32_t header_every; // 0 - print once, n - print if is_show
     byte_format byte_format;
     row_format row_format;
