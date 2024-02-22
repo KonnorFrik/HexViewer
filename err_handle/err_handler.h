@@ -14,6 +14,11 @@ typedef enum {
     REALLOC_ERROR,
 
     //new_sect_err = prev_start_of_section + OFFSET_SECTION,
+    WRONG_ARG_ERROR = MEMORY_ERROR + OFFSET_SECTION,
+    CMD_ARG_ERROR,
+    FUNC_ARG_ERROR,
+
+    //IO_ERROR
 
 } error_code;
 
