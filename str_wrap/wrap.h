@@ -72,5 +72,10 @@ size_t str_cat(string* dst, char* src);
  * 2:   src - C-string read from
  * ret: count of writed symbol's */
 
+void string_clear(string* obj);
+/* Clear given string buffer
+ * ! Modify input arg
+ * 1:   obj - string object ptr for clear
+ * ret: void */
 
 #endif

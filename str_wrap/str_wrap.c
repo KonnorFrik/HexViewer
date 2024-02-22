@@ -184,6 +184,10 @@ size_t str_cat(string* dst, char* src) {
     return count;
 }
 
+void string_clear(string* obj) {
+    memset(obj->string, 0, obj->size);
+}
+
 //void string_full_destroy(string** obj) {
     ///* Destroy string object correctly and return new address
      //* 1:   obj - string object ptr for destroy
