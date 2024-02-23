@@ -46,7 +46,7 @@ REPORT = REPORT.html
 TARGETS = $(VIEWER_TARGET)
 
 
-all: $(TARGETS) clean
+all: $(TARGETS) test gcov_report clean
 
 rebuild: clean_all all
 
@@ -67,12 +67,6 @@ test: compile_all_tests
 
 compile_all_tests: $(STRWRAP_TEST_SRC) $(STRWRAP_SRC) $(FORMATER_TEST_SRC) $(FORMATER_SRC) $(ERR_HANDLER_SRC) $(TEST_SRC)
 > $(CC) $^ $(TEST_FLAGS) -o $(TEST_TARGET)
-
-#$(STRWRAP_TEST_NAME): $(STRWRAP_TEST_SRC) $(STRWRAP_SRC) $(ERR_HANDLER_SRC)
-#> $(CC) $(STRWRAP_TEST_SRC) $(STRWRAP_SRC) $(ERR_HANDLER_SRC) $(TEST_FLAGS) -o $@
-
-#$(FORMATER_TEST_NAME): $(FORMATER_SRC) $(FORMATER_TEST_SRC) $(STRWRAP_SRC) $(ERR_HANDLER_SRC)
-#> $(CC) $(FORMATER_SRC) $(FORMATER_TEST_SRC) $(STRWRAP_SRC) $(ERR_HANDLER_SRC) $(TEST_FLAGS) -o $@
 
 clean:
 > rm -f $(VIEWER_OBJ)
