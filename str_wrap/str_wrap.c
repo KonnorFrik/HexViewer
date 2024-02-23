@@ -185,7 +185,9 @@ size_t str_cat(string* dst, char* src) {
 }
 
 void string_clear(string* obj) {
-    memset(obj->string, 0, obj->size);
+    if (obj != 0) {
+        memset(obj->string, 0, obj->size);
+    }
 }
 
 //void string_full_destroy(string** obj) {
