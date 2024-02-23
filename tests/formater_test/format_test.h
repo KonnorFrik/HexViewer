@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <check.h>
 #include "../../formater/hex_formater.h"
-#include "../common.h"
 
 
 Suite* test_format_create();

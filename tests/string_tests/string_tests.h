@@ -4,7 +4,6 @@
 #include <check.h>
 #include <stdio.h>
 #include "../../str_wrap/wrap.h"
-#include "../common.h"
 
 Suite* test_string_create();
 
@@ -15,5 +14,6 @@ Suite* test_str_write();
 Suite* test_str_cat();
 
 Suite* test_string_destroy();
+Suite* test_string_clear();
 
 #endif
