@@ -5,8 +5,7 @@
  * Contains functions for convert data before print
  */
 
-#include "views.h"
-//#include <string.h>
+#include "../views/views.h"
 #include <stdio.h>
 
 /* Convert byte to string object as c-byte
@@ -28,6 +27,7 @@ typedef struct _convert_byte_table {
     convert_byte_func func;
 } convert_byte_table;
 
+/// \brief aliasing functions with types
 const convert_byte_table CONVERT_TABLE[type_end] = {
     {c_type, &convert_byte_c_type},
     {py_type, &convert_byte_py_type},

@@ -1,4 +1,4 @@
-#include "views.h"
+#include "../views/views.h"
 #include <string.h>
 
 char decode_symb(uint8_t symb, page_format* obj) {
