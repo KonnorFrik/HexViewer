@@ -1,3 +1,7 @@
+/**
+ * \file
+ * \brief File with data printers
+ */
 #include "views.h"
 #include <stdio.h>
 #include <string.h>

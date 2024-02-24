@@ -1,65 +1,43 @@
+/**
+ * \file
+ * \brief Entry point
+ * Contains main function and some auxiliary
+ */
+
 #include "views/views.h"
 #include "formater/hex_formater.h"
 #include "str_wrap/wrap.h"
 #include "data/readers.h"
 #include "err_handle/err_handler.h"
-
 #include <getopt.h>
 #include <stdio.h>
-#include <assert.h>
 
+/** 
+ * \brief Read whole file row by row and print
+ * \param[in] filename Filename for print as hex
+ * \param[in] format Struct with rules how print file
+ * \return void
+ */
 static void print_file(char* filename, page_format* format);
-/* Read whole file row by row and print page with rules
- * i For non-interactive mode
- * 1:   filename - filename for read
- * 2:   format - page_format object ptr with rules
- * ret: void */
 
+/**
+ * \brief Print help message
+ * \return void */
 static void print_help();
-/* Print help page
- * ret: void */
 
+/**
+ * \brief Print usage 
+ * \return void */
 static void print_usage();
-/* Print usage 
- * ret: void */
 
-
-static void print_help() {
-    printf("HELP PAGE\n");
-}
-
-static void print_usage() {
-    printf("USAGE\n");
-}
-
-static void print_file(char* filename, page_format* format) {
-    FILE* file = fopen(filename, "r");
-    //assert(file && "Can't open file");
-
-    if (file != 0) {
-        uint64_t address = 0;
-
-        while (read_row(file, format) == format->row_format.bytes_len) {
-            // TODO make smthng with it '|'
-            printf("|");
-            print_address(address, format);
-            printf("  |  ");
-            print_byte_row(format);
-            printf("  |  ");
-            decode_print_row(format);
-            printf("|\n");
-            address += format->row_format.bytes_len;
-        }
-
-        fclose(file);
-
-    } else {
-        fprintf(stderr, "File: '%s' can't be opened\n", filename);
-    }
-}
-
-//TODO mb compile all modules in one shared obj
+/**
+ * \brief Main function - Entry point
+ * \param[in] argc Command line argument count
+ * \param[in] argv Command line argument values
+ * \return Programm status code
+ */
 int main(int argc, char* const* argv) {
+//TODO mb compile all modules in one shared obj
     error_code ret_code = NO_ERROR;
 
     page_format* format = 0;
@@ -84,4 +62,37 @@ int main(int argc, char* const* argv) {
 
     page_format_destroy(format);
     return ret_code;
+}
+
+static void print_help() {
+    printf("HELP PAGE\n");
+}
+
+static void print_usage() {
+    printf("USAGE\n");
+}
+
+static void print_file(char* filename, page_format* format) {
+    FILE* file = fopen(filename, "r");
+
+    if (file != 0) {
+        uint64_t address = 0;
+
+        while (read_row(file, format) == format->row_format.bytes_len) {
+            // TODO make smthng with it '|'
+            printf("|");
+            print_address(address, format);
+            printf("  |  ");
+            print_byte_row(format);
+            printf("  |  ");
+            decode_print_row(format);
+            printf("|\n");
+            address += format->row_format.bytes_len;
+        }
+
+        fclose(file);
+
+    } else {
+        fprintf(stderr, "File: '%s' can't be opened\n", filename);
+    }
 }

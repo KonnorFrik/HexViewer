@@ -1,19 +1,28 @@
+/**
+ * \file
+ * \brief File with data converters
+ *
+ * Contains functions for convert data before print
+ */
+
 #include "views.h"
 //#include <string.h>
 #include <stdio.h>
 
-static string* convert_byte_c_type(uint8_t symb, string* obj);
 /* Convert byte to string object as c-byte
  * 1:   symb - byte for convert
  * ret: result - string object ptr */
+static string* convert_byte_c_type(uint8_t symb, string* obj);
 
-static string* convert_byte_py_type(uint8_t symb, string* obj);
 /* Convert byte to string object as py-byte
  * 1:   symb - byte for convert
  * ret: result - string object ptr */
+static string* convert_byte_py_type(uint8_t symb, string* obj);
 
+/// \brief typedef for inner functions for contain them in array
 typedef string* (*convert_byte_func)(uint8_t, string*);
 
+/// \brief struct for alias functions with convert type
 typedef struct _convert_byte_table {
     byte_type type;
     convert_byte_func func;
