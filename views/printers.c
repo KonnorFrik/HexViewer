@@ -2,16 +2,17 @@
  * \file
  * \brief File with data printers
  */
+
 #include "views.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
-static void apply_byte_format(string* byte_str, page_format* format);
 /* Apply output rules from page_format obj for converted str
  * 1:   byte_str - string object ptr for modify
  * 2:   format - page_format object ptr with rules
  * ret: void */
+static void apply_byte_format(string* byte_str, page_format* format);
 
 static void apply_byte_format(string* byte_str, page_format* format) {
     if (format->byte_format.is_upper) {

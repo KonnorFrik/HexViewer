@@ -1,7 +1,8 @@
 #ifndef __STRING_WRAP_H__
 #define __STRING_WRAP_H__
 
-/*
+/** \file
+
       +----------------------------------------------+
       |        _            _                        |
       |  ___  | |_   _ __  (_)  _ __     __ _   ___  |
@@ -11,10 +12,11 @@
       |                                 |___/        |
       +----------------------------------------------+
 
- * Wrapper for std string lib
+ * \brief Wrapper for std string lib
+ *
  * <string_*> - works with two string object's
  * <str_*>    - work with string object as dst and C-string as src
- * All func's realloc memory for string's object buffer if not enough current size
+ * All func's realloc memory for string's object buffer if current size not enough
  */
 
 #include <stddef.h>
