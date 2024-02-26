@@ -67,20 +67,23 @@ int main(int argc, char* const* argv) {
 static void print_help(char* programm_name) {
     print_usage(programm_name);
     printf("                                Flags:\n");
-    printf("+--------------------------------------------------------------------+\n");
-    printf("|                 Byte format                                        |\n");
-    printf("| --upper-byte              - Print bytes in upper case              |\n");
-    printf("| --byte-type <type>        - Print bytes in given type              |\n");
-    printf("|                                     (default: c-type)              |\n");
-    printf("|                                                                    |\n");
-    printf("|                 Row format                                         |\n");
-    printf("| --address-len <number>    - Print address with given length        |\n");
-    printf("|                                 min/max printable - address in hex |\n");
-    printf("|                                 min/max valid - 1 - 29             |\n");
-    printf("| --address-type <type>     - Print address in given type            |\n");
-    printf("|                                          (default: hex)            |\n");
-    printf("| --help    - Show this page                                         |\n");
-    printf("+--------------------------------------------------------------------+\n");
+    printf("+----------------------------------------------------------------------+\n");
+    printf("|                 Byte format                                          |\n");
+    printf("| --upper-byte              - Print bytes in upper case                |\n");
+    printf("| --byte-type <type>        - Print bytes in given type                |\n");
+    printf("|                                     (default: c-type)                |\n");
+    printf("| --byte-delimiter <symb>   - Print given symbol between bytes         |\n");
+    printf("|                                               (default: ' ')         |\n");
+    printf("|                                                                      |\n");
+    printf("|                 Row format                                           |\n");
+    printf("| --address-len <number>    - Print address with given length          |\n");
+    printf("|                                 min/max printable - address in hex   |\n");
+    printf("|                                 min/max valid - 1 - 29               |\n");
+    printf("| --address-type <type>     - Print address in given type              |\n");
+    printf("|                                          (default: hex)              |\n");
+    printf("| --non-decode <symb>       - Print given symbol as non-decoding byte  |\n");
+    printf("| --help    - Show this page                                           |\n");
+    printf("+----------------------------------------------------------------------+\n");
     //printf("|\n");
 }
 
