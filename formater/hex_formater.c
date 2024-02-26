@@ -39,26 +39,32 @@ static void page_format_init_default(page_format* obj);
  * 1:   obj - page_format object ptr for init
  * ret: void */
 
-void page_format_init(int argc, char* const* argv, page_format* obj) {
+int page_format_init(int argc, char* const* argv, page_format* obj) {
+    if (argv == NULL || obj == NULL) {
+        return ERROR;
+    }
+
+    int status = NO_ERROR;
     int long_index = -1;
     int cmd_flag = 0;
     char symb = 0;
 
     const char* short_names = "";
     const struct option long_names[] = {
+        {"help", NO_ARG, &cmd_flag, help_flag},
         {"upper-byte", NO_ARG, &cmd_flag, upper_case_flag},
+
         {"byte-type", REQ_ARG, &cmd_flag, byte_type_flag},
         {"address-len", REQ_ARG, &cmd_flag, address_len_flag},
         {"address-type", REQ_ARG, &cmd_flag, address_type_flag},
         {"non-decode", REQ_ARG, &cmd_flag, non_decode_flag},
         {"byte-delimiter", REQ_ARG, &cmd_flag, byte_delimiter_flag},
-        {"help", NO_ARG, &cmd_flag, help_flag},
         {0, 0, 0, 0}
     };
 
     opterr = 0;
 
-    while ((symb = getopt_long(argc, argv, short_names, long_names, &long_index) != -1)) {
+    while (status == NO_ERROR && (symb = getopt_long(argc, argv, short_names, long_names, &long_index) != -1)) {
         //printf("symb:      '%c'(%d)\n", symb, symb);
         //printf("long_index: %d\n", long_index);
         //printf("cmd_flag:   %d\n", cmd_flag);
@@ -109,16 +115,20 @@ void page_format_init(int argc, char* const* argv, page_format* obj) {
                 obj->row_format.bytes_delimiter = optarg[0];
                 break;
 
-            case '?':
-                fprintf(stderr, "Unknown argument, need exit\n");
-                break;
+            //case '?':
+                //fprintf(stderr, "Unknown argument, need exit\n");
+                //status = ERROR;
+                //break;
 
             default:
                 fprintf(stderr, "Unknown error\n");
+                status = ERROR;
                 break;
         }
     }
-    //TODO postinit for allocate byte_array
+
+    return status;
+    //TODO postinit for allocate current_row with correct size stored in obj->...bytes_len
 }
 
 static void page_format_init_default(page_format* obj) {

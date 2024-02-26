@@ -29,8 +29,8 @@ void page_format_destroy(page_format* obj);
  * @param[in]  argc - count of cmd argument's 
  * @param[in]  argv - cmd argument's
  * @param[out] obj - NON NULL page_format object for set flags
- * @return void */
-void page_format_init(int argc, char* const* argv, page_format* obj);
+ * @return status - NO_ERROR, ERROR */
+int page_format_init(int argc, char* const* argv, page_format* obj);
 
 #endif
 
