@@ -1,3 +1,9 @@
+/**
+ * @file
+ * @brief Contains functions for decode
+ * Decoding from byte to char one byte or many
+ */
+
 #include "../views/views.h"
 #include <string.h>
 

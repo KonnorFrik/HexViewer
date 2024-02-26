@@ -1,3 +1,7 @@
+/** @file
+ * @brief implementation of string wrap module
+ */
+
 #include "wrap.h"
 #include "../err_handle/err_handler.h"
 
@@ -8,10 +12,10 @@
 static void safe_string_realloc(string* obj, size_t new_size);
 static error_code string_realloc(string* obj, size_t new_size);
 
+/* Make realloc for string object to given size and return status
+ * 1:   obj - string object for realloc his buffer
+ * ret: realloc_status - NO_ERROR or REALLOC_ERROR*/
 static error_code string_realloc(string* obj, size_t new_size) {
-    /* Make realloc for string object to given size and return status
-     * 1:   obj - string object for realloc his buffer
-     * ret: realloc_status - NO_ERROR or REALLOC_ERROR*/
 
     char* tmp = realloc(obj->string, new_size);
     error_code realloc_status = REALLOC_ERROR;
@@ -25,11 +29,11 @@ static error_code string_realloc(string* obj, size_t new_size) {
     return realloc_status;
 }
 
+/* Check status code from 'string_realloc' and handles it
+ * - Abort for any error 
+ * 1:   obj - string object for realloc his buffer
+ * ret: void */
 static void safe_string_realloc(string* obj, size_t new_size) {
-    /* Check status code from 'string_realloc' and handles it
-     * - Abort for any error 
-     * 1:   obj - string object for realloc his buffer
-     * ret: void */
 
     if (obj->size == new_size) {
         return;

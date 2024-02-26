@@ -1,6 +1,6 @@
 /**
- * \file
- * \brief Entry point
+ * @file
+ * @brief Entry point
  * Contains main function and some auxiliary
  */
 
@@ -13,28 +13,28 @@
 #include <stdio.h>
 
 /** 
- * \brief Read whole file row by row and print
- * \param[in] filename Filename for print as hex
- * \param[in] format Struct with rules how print file
- * \return void
+ * @brief Read whole file row by row and print
+ * @param[in] filename Filename for print as hex
+ * @param[in] format Struct with rules how print file
+ * @return void
  */
 static void print_file(char* filename, page_format* format);
 
 /**
- * \brief Print help message
- * \return void */
+ * @brief Print help message
+ * @return void */
 static void print_help();
 
 /**
- * \brief Print usage 
- * \return void */
+ * @brief Print usage 
+ * @return void */
 static void print_usage();
 
 /**
- * \brief Main function - Entry point
- * \param[in] argc Command line argument count
- * \param[in] argv Command line argument values
- * \return Programm status code
+ * @brief Main function - Entry point
+ * @param[in] argc Command line argument count
+ * @param[in] argv Command line argument values
+ * @return Programm status code
  */
 int main(int argc, char* const* argv) {
 //TODO mb compile all modules in one shared obj

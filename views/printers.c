@@ -1,6 +1,6 @@
 /**
- * \file
- * \brief File with data printers
+ * @file
+ * @brief File with data printers
  */
 
 #include "views.h"

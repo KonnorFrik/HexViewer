@@ -1,3 +1,8 @@
+/**
+ * @file
+ * @brief Contains functions prototypes for processing format struct
+ */
+
 #ifndef __BIN_TO_HEX_H__
 #define __BIN_TO_HEX_H__
 
@@ -5,22 +10,27 @@
 #include "../str_wrap/wrap.h"
 #include <stdint.h>
 
+/**
+ * @brief Create format with rules and set default setting's
+ * @note Alloc memory for page_format type
+ * @return obj - default page_format object ptr */
 page_format* page_format_create();
-/* Alloc memory for page_format type
- * Set default setting's 
- * ret: obj - default page_format object ptr */
 
+/**
+ * @brief Free given page_format object 
+ * @param[in] obj - NON NULL page_format object for free
+ * @return void */
 void page_format_destroy(page_format* obj);
-/* Free given page_format object 
- * 1:   obj - NON NULL page_format object ptr for free
- * ret: void */
 
+/**
+ * @brief Set values from cmd flags 
+ * @note Call once on start of programm
+ * @warning Do not allocate memory for obj if it NULL
+ * @param[in]  argc - count of cmd argument's 
+ * @param[in]  argv - cmd argument's
+ * @param[out] obj - NON NULL page_format object for set flags
+ * @return void */
 void page_format_init(int argc, char* const* argv, page_format* obj);
-/* Set values from cmd args 
- * 1:   argc - count of cmd argument's 
- * 2:   argv - cmd argument's
- * 3:   obj - page_format object ptr for init
- * ret: void */
 
 #endif
 

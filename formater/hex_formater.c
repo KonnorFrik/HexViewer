@@ -1,3 +1,8 @@
+/**
+ * @file
+ * @brief Contains functions implementation for processing format struct
+ */
+
 #include "hex_formater.h"
 #include "../err_handle/err_handler.h"
 #include <assert.h>
@@ -16,13 +21,14 @@
 #define OCT_ADDR_TYPE "oct"
 #define DEC_ADDR_TYPE "dec"
 
-enum _cmd_flags {
+/// @brief Numbers for flags for getopt
+enum cmd_flags_ {
     fake = 0,
-    help_flag,
-    upper_case_flag,
-    byte_type_flag,
-    address_len_flag,
-    address_type_flag,
+    help_flag,         ///< --help
+    upper_case_flag,   ///< --upper-byte
+    byte_type_flag,    ///< --byte-type <c, py(python)>
+    address_len_flag,  ///< --address-len <number> (min: 1, max: 29)
+    address_type_flag, ///< --address-type <hex, dec, oct>
 };
 
 static void page_format_init_default(page_format* obj);

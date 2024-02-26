@@ -1,7 +1,7 @@
 #ifndef __STRING_WRAP_H__
 #define __STRING_WRAP_H__
 
-/** \file
+/** @file
 
       +----------------------------------------------+
       |        _            _                        |
@@ -12,7 +12,7 @@
       |                                 |___/        |
       +----------------------------------------------+
 
- * \brief Wrapper for std string lib
+ * @brief Wrapper for std string lib
  *
  * <string_*> - works with two string object's
  * <str_*>    - work with string object as dst and C-string as src
@@ -28,56 +28,64 @@ typedef struct {
 } string;
 
 
+/**
+ * @brief Create string and return pointer
+ * @note Just alloc memory for both: object and buffer
+ * @warning Abort if can't allocate memory
+ * @return ptr to string object */
 string* string_create();
-/* Create string and return pointer
- * - Just alloc memory for both: object and buffer
- * - Abort if can't allocate memory
- * ret: ptr to string object */
 
+/**
+ * @brief Create string from C-string and return object
+ * @param[in] str - C-string for copy
+ * @return ptr to string object */
 string* string_create_from(char* str);
-/* Create string from C-string and return object
- * 1:   str - C-string for copy
- * ret: ptr to string object */
 
+/**
+ * @brief Destroy string object correctly and return new address
+ * @param[in] obj - string object for destroy
+ * @return void */
 string* string_destroy(string* obj);
-/* Destroy string object correctly and return new address
- * 1:   obj - string object ptr for destroy
- * ret: void */
 
 
+/**
+ * @brief Write all content from string obj src to string obj dst
+ * @note Overwrite lenght attribute
+ * @param[out] dst - string object for write in
+ * @param[in]  src - string object read from
+ * @return count of writed symbol's */
 size_t string_write(string* dst, string* src);
-/* Write all content from string obj src to string obj dst
- * - Overwrite lenght attribute
- * 1:   dst - string object for write in
- * 2:   src - string object read from
- * ret: count of writed symbol's */
 
+/**
+ * @brief Write all content from C-string src to string obj dst
+ * @note Overwrite lenght attribute
+ * @param[out] dst - string object for write in
+ * @param[in]  src - C-string read from
+ * @return count of writed symbol's */
 size_t str_write(string* dst, char* src);
-/* Write all content from C-string src to string obj dst
- * - Overwrite lenght attribute
- * 1:   dst - string object for write in
- * 2:   src - C-string read from
- * ret: count of writed symbol's */
 
 
+/**
+ * @brief Concatinate content from string obj src to string obj dst
+ * @note Adding lenght for dst object
+ * @param[out] dst - string object for concatinate with
+ * @param[in]  src - string object read from
+ * @return count of writed symbol's */
 size_t string_cat(string* dst, string* src);
-/* Concatinate content from string obj src to string obj dst
- * - Adding lenght for dst object
- * 1:   dst - string object for concatinate with
- * 2:   src - string object read from
- * ret: count of writed symbol's */
 
+/**
+ * @brief Concatinate content from C-string src to string obj dst
+ * @note Adding lenght for dst object
+ * @param[out] dst - string object for concatinate with
+ * @param[in]  src - C-string read from
+ * @return count of writed symbol's */
 size_t str_cat(string* dst, char* src);
-/* Concatinate content from C-string src to string obj dst
- * - Adding lenght for dst object
- * 1:   dst - string object for concatinate with
- * 2:   src - C-string read from
- * ret: count of writed symbol's */
 
+/**
+ * @brief Clear buffer in given string object
+ * @warning Modify input arg
+ * @param[in, out] obj - string object for clear
+ * @return void */
 void string_clear(string* obj);
-/* Clear given string buffer
- * ! Modify input arg
- * 1:   obj - string object ptr for clear
- * ret: void */
 
 #endif
