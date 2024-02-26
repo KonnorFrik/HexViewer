@@ -1,12 +1,12 @@
 Idea:
-    Hex viewer - programm for print represented byte's from file as hexadecimal in stdout
+    Hex viewer - programm for print byte's from file as hexadecimal in stdout
     Read given file's or stdin and print it content converted to hex to stdout
 
 
 Byte representation [HEX BYTES] :
     byte's writed as 2 symbol's (ex: "0F") in upper or lower case
     Lower case for default (change by flag --upper-byte)
-    C-type for default ( change by flag --byte-format ...)
+    C-type for default ( change by flag --byte-type ...)
     Output type's: 
         C-type (ex: "0f")
         Python-type (ex: "\x0f")
