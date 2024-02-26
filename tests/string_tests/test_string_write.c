@@ -40,6 +40,7 @@ START_TEST(string_write_test_overwrite_str) {
     ck_assert_uint_eq(writed, 5);
 
     string_destroy(obj);
+    string_destroy(str2);
 }
 END_TEST
 
@@ -57,6 +58,7 @@ START_TEST(string_write_test_overwrite_with_empty) {
     ck_assert_uint_eq(writed, 1);
 
     string_destroy(obj);
+    string_destroy(str2);
 }
 END_TEST
 
@@ -74,14 +76,14 @@ START_TEST(string_write_test_overwrite_empty_2) {
     ck_assert_uint_eq(writed, 6);
 
     string_destroy(obj);
+    string_destroy(str2);
 }
 END_TEST
 
 START_TEST(string_write_test_to_null) {
-    string* obj = 0;
     string* str2 = string_create_from("Hello");
 
-    size_t writed = string_write(obj, str2);
+    size_t writed = string_write(0, str2);
 
     //ck_assert_ptr_nonnull(obj);
     //ck_assert_ptr_nonnull(obj->string);
@@ -90,22 +92,20 @@ START_TEST(string_write_test_to_null) {
     //ck_assert_uint_eq(obj->size, 6);
     ck_assert_uint_eq(writed, 0);
 
-    string_destroy(obj);
+    string_destroy(str2);
 }
 END_TEST
 
 START_TEST(string_write_test_from_null) {
     string* obj = string_create_from("");
-    string* str2 = 0;
-
-    size_t writed = string_write(obj, str2);
+    size_t writed = string_write(obj, 0);
 
     //ck_assert_ptr_nonnull(obj);
     //ck_assert_ptr_nonnull(obj->string);
     //ck_assert_str_eq(obj->string, str2->string);
     //ck_assert_uint_eq(obj->length, 5);
     //ck_assert_uint_eq(obj->size, 6);
-    ck_assert_uint_eq(writed, 0);
+    ck_assert_uint_eq(0, writed);
 
     string_destroy(obj);
 }

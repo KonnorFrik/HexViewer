@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <check.h>
 #include "../../formater/hex_formater.h"
+#include "../../err_handle/err_handler.h"
 
 
 Suite* test_format_create();
