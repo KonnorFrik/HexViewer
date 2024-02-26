@@ -29,6 +29,7 @@ enum cmd_flags_ {
     byte_type_flag,    ///< --byte-type <c, py(python)>
     address_len_flag,  ///< --address-len <number> (min: 1, max: 29)
     address_type_flag, ///< --address-type <hex, dec, oct>
+    non_decode_flag,   ///< --non-decode <symb>
 };
 
 static void page_format_init_default(page_format* obj);
@@ -48,6 +49,7 @@ void page_format_init(int argc, char* const* argv, page_format* obj) {
         {"byte-type", REQ_ARG, &cmd_flag, byte_type_flag},
         {"address-len", REQ_ARG, &cmd_flag, address_len_flag},
         {"address-type", REQ_ARG, &cmd_flag, address_type_flag},
+        {"non-decode", REQ_ARG, &cmd_flag, non_decode_flag},
         {"help", NO_ARG, &cmd_flag, help_flag},
         {0, 0, 0, 0}
     };
@@ -95,6 +97,10 @@ void page_format_init(int argc, char* const* argv, page_format* obj) {
                 } else if (strcmp(optarg, OCT_ADDR_TYPE) == 0) {
                     obj->row_format.address_type = oct_type;
                 }
+                break;
+
+            case non_decode_flag:
+                obj->row_format.std_symbol = optarg[0];
                 break;
 
             case '?':
