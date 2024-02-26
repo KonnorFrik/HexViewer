@@ -25,12 +25,12 @@
 enum cmd_flags_ {
     fake = 0,
     help_flag,           ///< --help
-    upper_case_flag,     ///< --upper-byte
-    byte_type_flag,      ///< --byte-type <c, py(python)>
-    address_len_flag,    ///< --address-len <number> (min: 1, max: 29)
-    address_type_flag,   ///< --address-type <hex, dec, oct>
-    non_decode_flag,     ///< --non-decode <symb>
-    byte_delimiter_flag, ///< --byte-delimiter <symb>
+    upper_case_flag,     ///< --upper-byte - Print bytes in upper case
+    byte_type_flag,      ///< --byte-type <c, py(python)> - Print bytes in given type
+    address_len_flag,    ///< --address-len <number> (min: 1, max: 29) - Print address with given length
+    address_type_flag,   ///< --address-type <hex, dec, oct> - Print address in given type
+    non_decode_flag,     ///< --non-decode <symb> - Print given symbol as non-decoding byte
+    byte_delimiter_flag, ///< --byte-delimiter <symb> - Print given symbol between bytes
 };
 
 static void page_format_init_default(page_format* obj);
