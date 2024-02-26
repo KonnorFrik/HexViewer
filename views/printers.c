@@ -61,6 +61,8 @@ void print_address(uint64_t address, page_format* format) {
 
 void print_byte_row(page_format* format) {
     string* byte_str = string_create();
+    printf("%c", format->row_format.bytes_delimiter);
+
     for (uint8_t count = 0; count < format->row_format.bytes_len; ++count) {
         convert_byte_to_str(format->byte_format.type, format->current_row[count], byte_str);
 
