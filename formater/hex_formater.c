@@ -24,12 +24,13 @@
 /// @brief Numbers for flags for getopt
 enum cmd_flags_ {
     fake = 0,
-    help_flag,         ///< --help
-    upper_case_flag,   ///< --upper-byte
-    byte_type_flag,    ///< --byte-type <c, py(python)>
-    address_len_flag,  ///< --address-len <number> (min: 1, max: 29)
-    address_type_flag, ///< --address-type <hex, dec, oct>
-    non_decode_flag,   ///< --non-decode <symb>
+    help_flag,           ///< --help
+    upper_case_flag,     ///< --upper-byte
+    byte_type_flag,      ///< --byte-type <c, py(python)>
+    address_len_flag,    ///< --address-len <number> (min: 1, max: 29)
+    address_type_flag,   ///< --address-type <hex, dec, oct>
+    non_decode_flag,     ///< --non-decode <symb>
+    byte_delimiter_flag, ///< --byte-delimiter <symb>
 };
 
 static void page_format_init_default(page_format* obj);
@@ -50,6 +51,7 @@ void page_format_init(int argc, char* const* argv, page_format* obj) {
         {"address-len", REQ_ARG, &cmd_flag, address_len_flag},
         {"address-type", REQ_ARG, &cmd_flag, address_type_flag},
         {"non-decode", REQ_ARG, &cmd_flag, non_decode_flag},
+        {"byte-delimiter", REQ_ARG, &cmd_flag, byte_delimiter_flag},
         {"help", NO_ARG, &cmd_flag, help_flag},
         {0, 0, 0, 0}
     };
@@ -101,6 +103,10 @@ void page_format_init(int argc, char* const* argv, page_format* obj) {
 
             case non_decode_flag:
                 obj->row_format.std_symbol = optarg[0];
+                break;
+
+            case byte_delimiter_flag:
+                obj->row_format.bytes_delimiter = optarg[0];
                 break;
 
             case '?':
