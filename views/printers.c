@@ -31,15 +31,7 @@ static void apply_byte_format(string* byte_str, page_format* format) {
 
 void print_address(uint64_t address, page_format* format) {
     char fmt[37] = {0};
-
-    if (format->row_format.address_len < 30 &&
-        format->row_format.address_len > 0) {
-        sprintf(fmt, "%%0%dl", format->row_format.address_len);
-
-    } else {
-        sprintf(fmt, "%%04l");
-    }
-
+    sprintf(fmt, "%%0%dl", format->row_format.address_len);
     size_t current_fmt_len = strlen(fmt);
 
     switch (format->row_format.address_type) {

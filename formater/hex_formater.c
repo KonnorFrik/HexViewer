@@ -27,7 +27,7 @@ enum cmd_flags_ {
     help_flag,           ///< --help
     upper_case_flag,     ///< --upper-byte - Print bytes in upper case
     byte_type_flag,      ///< --byte-type <c, py(python)> - Print bytes in given type
-    address_len_flag,    ///< --address-len <number> (min: 1, max: 29) - Print address with given length
+    address_len_flag,    ///< --address-len <number> (min: 1, max: 255) - Print address with given length
     address_type_flag,   ///< --address-type <hex, dec, oct> - Print address in given type
     non_decode_flag,     ///< --non-decode <symb> - Print given symbol as non-decoding byte
     byte_delimiter_flag, ///< --byte-delimiter <symb> - Print given symbol between bytes

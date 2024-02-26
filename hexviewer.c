@@ -78,7 +78,7 @@ static void print_help(char* programm_name) {
     printf("|                 Row format                                           |\n");
     printf("| --address-len <number>    - Print address with given length          |\n");
     printf("|                                 min/max printable - address in hex   |\n");
-    printf("|                                 min/max valid - 1 - 29               |\n");
+    printf("|                                 min/max valid - 1 - 255              |\n");
     printf("| --address-type <type>     - Print address in given type              |\n");
     printf("|                                          (default: hex)              |\n");
     printf("| --non-decode <symb>       - Print given symbol as non-decoding byte  |\n");
