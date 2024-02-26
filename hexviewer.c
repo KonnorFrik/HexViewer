@@ -23,12 +23,12 @@ static void print_file(char* filename, page_format* format);
 /**
  * @brief Print help message
  * @return void */
-static void print_help();
+static void print_help(char* programm_name);
 
 /**
  * @brief Print usage 
  * @return void */
-static void print_usage();
+static void print_usage(char* programm_name);
 
 /**
  * @brief Main function - Entry point
@@ -45,12 +45,12 @@ int main(int argc, char* const* argv) {
     page_format_init(argc, argv, format);
 
     if (format->show_help) {
-        print_help();
+        print_help(argv[0]);
 
     } else {
         if (optind >= argc) {
             fprintf(stderr, "No filename given for read\n");
-            print_usage();
+            print_usage(argv[0]);
             ret_code = CMD_ARG_ERROR;
         }
 
@@ -64,12 +64,28 @@ int main(int argc, char* const* argv) {
     return ret_code;
 }
 
-static void print_help() {
-    printf("HELP PAGE\n");
+static void print_help(char* programm_name) {
+    print_usage(programm_name);
+    printf("                                Flags:\n");
+    printf("+--------------------------------------------------------------------+\n");
+    printf("|                 Byte format                                        |\n");
+    printf("| --upper-byte              - Print bytes in upper case              |\n");
+    printf("| --byte-type <type>        - Print bytes in given type              |\n");
+    printf("|                                     (default: c-type)              |\n");
+    printf("|                                                                    |\n");
+    printf("|                 Row format                                         |\n");
+    printf("| --address-len <number>    - Print address with given length        |\n");
+    printf("|                                 min/max printable - address in hex |\n");
+    printf("|                                 min/max valid - 1 - 29             |\n");
+    printf("| --address-type <type>     - Print address in given type            |\n");
+    printf("|                                          (default: hex)            |\n");
+    printf("| --help    - Show this page                                         |\n");
+    printf("+--------------------------------------------------------------------+\n");
+    //printf("|\n");
 }
 
-static void print_usage() {
-    printf("USAGE\n");
+static void print_usage(char* programm_name) {
+    printf("Usage: %s filename [flags]\n", programm_name);
 }
 
 static void print_file(char* filename, page_format* format) {

@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include "../data/data_processing.h"
 
 /* Apply output rules from page_format obj for converted str
  * 1:   byte_str - string object ptr for modify
@@ -61,7 +62,6 @@ void print_address(uint64_t address, page_format* format) {
 void print_byte_row(page_format* format) {
     string* byte_str = string_create();
     for (uint8_t count = 0; count < format->row_format.bytes_len; ++count) {
-        //string* byte_str = convert_byte_to_str(format->byte_format.type, format->current_row[count]);
         convert_byte_to_str(format->byte_format.type, format->current_row[count], byte_str);
 
         apply_byte_format(byte_str, format);
