@@ -2,7 +2,7 @@
  * @file
  * @brief File with data converters
  *
- * Contains functions for convert data before print
+ * Contains functions for convert data for next processing
  */
 
 #include "../views/views.h"
@@ -64,4 +64,5 @@ string* convert_byte_to_str(byte_type search, uint8_t byte, string* buffer_out) 
 
     return buffer_out;
 }
+
 
