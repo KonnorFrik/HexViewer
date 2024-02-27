@@ -14,6 +14,7 @@ typedef enum byte_type_ {
     no_type = 0,
     c_type,
     py_type,
+    asm_type,
     type_end, // not for users, need delete this and 'no_type'
 } byte_type;
 

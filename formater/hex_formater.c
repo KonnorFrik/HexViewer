@@ -18,6 +18,8 @@
 #define BYTE_PY_TYPE "python"
 #define BYTE_PY_TYPE_SHORT "py"
 
+#define BYTE_ASM_TYPE "asm"
+
 #define OCT_ADDR_TYPE "oct"
 #define DEC_ADDR_TYPE "dec"
 
@@ -100,7 +102,11 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
                 if (strcmp(optarg, BYTE_PY_TYPE) == 0 ||
                     strcmp(optarg, BYTE_PY_TYPE_SHORT) == 0) {
                     obj->byte_format.type = py_type;
-                } 
+
+                } else if (strcmp(optarg, BYTE_ASM_TYPE) == 0) {
+                    obj->byte_format.type = asm_type;
+                }
+
                 break;
 
             case address_len_flag:
