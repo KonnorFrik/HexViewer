@@ -31,6 +31,7 @@ enum cmd_flags_ {
     address_type_flag,   ///< --address-type <hex, dec, oct> - Print address in given type
     non_decode_flag,     ///< --non-decode <symb> - Print given symbol as non-decoding byte
     byte_delimiter_flag, ///< --byte-delimiter <symb> - Print given symbol between bytes
+    row_len_flag,        ///< --row-len <number> - Read and print given count of bytes Default: 16
 };
 
 static void page_format_init_default(page_format* obj);
@@ -38,6 +39,17 @@ static void page_format_init_default(page_format* obj);
  * ! Overwrite object
  * 1:   obj - page_format object ptr for init
  * ret: void */
+
+page_format* page_format_create() {
+    page_format* obj = 0;
+    obj = calloc(1, sizeof(page_format));
+    assert(obj != 0 && "Can't allocate memory");
+
+    // default init
+    page_format_init_default(obj);
+
+    return obj;
+}
 
 int page_format_init(int argc, char* const* argv, page_format* obj) {
     if (argv == NULL || obj == NULL) {
@@ -59,6 +71,7 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
         {"address-type", REQ_ARG, &cmd_flag, address_type_flag},
         {"non-decode", REQ_ARG, &cmd_flag, non_decode_flag},
         {"byte-delimiter", REQ_ARG, &cmd_flag, byte_delimiter_flag},
+        {"row-len", REQ_ARG, &cmd_flag, row_len_flag},
         {0, 0, 0, 0}
     };
 
@@ -71,12 +84,8 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
         //printf("optarg:     %s\n", optarg);
         //printf("optind:     %d\n", optind);
         //printf("\n");
-        //switch (symb) {
-            //case 'h':
-                //printf("SHORT HELP FLAG\n");
-                //obj->show_help = 1;
-                //break;
-        //}
+
+        str_to_lower(optarg);
 
         switch (cmd_flag) {
             case help_flag:
@@ -115,10 +124,9 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
                 obj->row_format.bytes_delimiter = optarg[0];
                 break;
 
-            //case '?':
-                //fprintf(stderr, "Unknown argument, need exit\n");
-                //status = ERROR;
-                //break;
+            case row_len_flag:
+                obj->row_format.bytes_len = strtol(optarg, NULL, 10);
+                break;
 
             default:
                 fprintf(stderr, "Unknown error\n");
@@ -127,8 +135,11 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
         }
     }
 
+    //postinit
+    obj->current_row = calloc(obj->row_format.bytes_len, sizeof(uint8_t));
+    assert(obj->current_row != 0 && "Can't allocate memory");
+
     return status;
-    //TODO postinit for allocate current_row with correct size stored in obj->...bytes_len
 }
 
 static void page_format_init_default(page_format* obj) {
@@ -146,22 +157,6 @@ static void page_format_init_default(page_format* obj) {
     // [PAGE]
     obj->is_show_header = 1;
     obj->header_every = 0;
-}
-
-page_format* page_format_create() {
-    page_format* obj = 0;
-    obj = calloc(1, sizeof(page_format));
-    assert(obj != 0 && "Can't allocate memory");
-
-    obj->current_row = calloc(DEFAULT_ROW_LEN,
-                                  sizeof(uint8_t));
-
-    assert(obj->current_row != 0 && "Can't allocate memory");
-
-    // default init
-    page_format_init_default(obj);
-
-    return obj;
 }
 
 void page_format_destroy(page_format* obj) {
