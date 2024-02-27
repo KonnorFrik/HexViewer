@@ -34,6 +34,7 @@ enum cmd_flags_ {
     non_decode_flag,     ///< --non-decode <symb> - Print given symbol as non-decoding byte
     byte_delimiter_flag, ///< --byte-delimiter <symb> - Print given symbol between bytes
     row_len_flag,        ///< --row-len <number> - Read and print given count of bytes Default: 16
+    strings_flag,        ///< --strings - Print row only if any byte can be printed as symbol
 };
 
 static void page_format_init_default(page_format* obj);
@@ -67,6 +68,7 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
     const struct option long_names[] = {
         {"help", NO_ARG, &cmd_flag, help_flag},
         {"upper-byte", NO_ARG, &cmd_flag, upper_case_flag},
+        {"strings", NO_ARG, &cmd_flag, strings_flag},
 
         {"byte-type", REQ_ARG, &cmd_flag, byte_type_flag},
         {"address-len", REQ_ARG, &cmd_flag, address_len_flag},
@@ -137,6 +139,10 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
                 }
                 break;
 
+            case strings_flag:
+                obj->row_format.strings = 1;
+                break;
+
             default:
                 fprintf(stderr, "Unknown error\n");
                 status = ERROR;
@@ -162,6 +168,7 @@ static void page_format_init_default(page_format* obj) {
     obj->row_format.bytes_len = DEFAULT_ROW_LEN;
     obj->row_format.bytes_delimiter = ' ';
     obj->row_format.std_symbol = '.';
+    obj->row_format.strings = 0;
 
     // [PAGE]
     obj->is_show_header = 1;

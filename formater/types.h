@@ -34,6 +34,8 @@ typedef struct byte_format_ {
 
 /// @brief store rules for processing and print row of bytes
 typedef struct row_format_ {
+    uint8_t strings: 1;        ///< Print row only if any byte can be printed as symbol
+    uint8_t reserve: 7;
     uint8_t address_len;     ///< @note default: 4
     addr_type address_type ; ///< @note default: hex 
 

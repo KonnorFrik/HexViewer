@@ -20,6 +20,14 @@
  */
 static void print_file(char* filename, page_format* format);
 
+/** 
+ * @brief Read whole file row by row and print rows if bytes in can be decoded to symbols
+ * @param[in] filename Filename for print as hex
+ * @param[in] format Struct with rules how print file
+ * @return void
+ */
+static void print_files_strings(char* filename, page_format* format);
+
 /**
  * @brief Print help message
  * @return void */
@@ -54,8 +62,13 @@ int main(int argc, char* const* argv) {
             ret_code = CMD_ARG_ERROR;
         }
 
+        void (*printer)(char*, page_format*) = NULL;
+        printer = (format->row_format.strings == 1) ?\
+                  print_files_strings :\
+                  print_file;
+
         for (int index = optind; index < argc; ++index) {
-            print_file(argv[index], format);
+            printer(argv[index], format);
         }
 
     }
@@ -64,33 +77,34 @@ int main(int argc, char* const* argv) {
     return ret_code;
 }
 
-static void print_help(char* programm_name) {
-    print_usage(programm_name);
-    printf("                                Flags:\n");
-    printf("+----------------------------------------------------------------------+\n");
-    printf("|                 Byte format                                          |\n");
-    printf("| --upper-byte              - Print bytes in upper case                |\n");
-    printf("| --byte-type <type>        - Print bytes in given type                |\n");
-    printf("|                                     (default: c-type)                |\n");
-    printf("| --byte-delimiter <symb>   - Print given symbol between bytes         |\n");
-    printf("|                                               (default: ' ')         |\n");
-    printf("|                                                                      |\n");
-    printf("|                 Row format                                           |\n");
-    printf("| --address-len <number>    - Print address with given length          |\n");
-    printf("|                                 min/max printable - address in hex   |\n");
-    printf("|                                 min/max valid - 1 - 255              |\n");
-    printf("| --address-type <type>     - Print address in given type              |\n");
-    printf("|                                          (default: hex)              |\n");
-    printf("| --non-decode <symb>       - Print given symbol as non-decoding byte  |\n");
-    printf("| --row-len <number>        - Read and print given count of bytes      |\n");
-    printf("|                                   min/max: 1, 255 (default: 16)      |\n");
-    printf("| --help                    - Show this page                           |\n");
-    printf("+----------------------------------------------------------------------+\n");
-    //printf("|\n");
-}
+static void print_files_strings(char* filename, page_format* format) {
+    FILE* file = fopen(filename, "r");
 
-static void print_usage(char* programm_name) {
-    printf("Usage: %s filename [flags]\n", programm_name);
+    if (file != 0) {
+        uint64_t address = 0;
+
+        while (read_row(file, format) == format->row_format.bytes_len) {
+            for (int i = 0; i < format->row_format.bytes_len; ++i) {
+                if (decode_symb(format->current_row[i], format) != format->row_format.std_symbol) {
+                    printf("|");
+                    print_address(address, format);
+                    printf("  |  ");
+                    print_byte_row(format);
+                    printf("  |  ");
+                    decode_print_row(format);
+                    printf("|\n");
+                    break;
+                }
+            }
+
+            address += format->row_format.bytes_len;
+        }
+
+        fclose(file);
+
+    } else {
+        fprintf(stderr, "File: '%s' can't be opened\n", filename);
+    }
 }
 
 static void print_file(char* filename, page_format* format) {
@@ -116,4 +130,35 @@ static void print_file(char* filename, page_format* format) {
     } else {
         fprintf(stderr, "File: '%s' can't be opened\n", filename);
     }
+}
+
+static void print_help(char* programm_name) {
+    print_usage(programm_name);
+    printf("                                Flags:\n");
+    printf("+----------------------------------------------------------------------+\n");
+    printf("|                 Byte format                                          |\n");
+    printf("| --upper-byte              - Print bytes in upper case                |\n");
+    printf("| --byte-type <type>        - Print bytes in given type                |\n");
+    printf("|                                     (default: c-type)                |\n");
+    printf("| --byte-delimiter <symb>   - Print given symbol between bytes         |\n");
+    printf("|                                               (default: ' ')         |\n");
+    printf("|                                                                      |\n");
+    printf("|                 Row format                                           |\n");
+    printf("| --address-len <number>    - Print address with given length          |\n");
+    printf("|                                 min/max printable - address in hex   |\n");
+    printf("|                                 min/max valid - 1 - 255              |\n");
+    printf("| --address-type <type>     - Print address in given type              |\n");
+    printf("|                                          (default: hex)              |\n");
+    printf("| --non-decode <symb>       - Print given symbol as non-decoding byte  |\n");
+    printf("| --row-len <number>        - Read and print given count of bytes      |\n");
+    printf("|                                   min/max: 1, 255 (default: 16)      |\n");
+    printf("| --strings                 - Print row only if any byte can be        |\n");
+    printf("|                                             printed as symbol        |\n");
+    printf("| --help                    - Show this page                           |\n");
+    printf("+----------------------------------------------------------------------+\n");
+    //printf("|\n");
+}
+
+static void print_usage(char* programm_name) {
+    printf("Usage: %s filename [flags]\n", programm_name);
 }
