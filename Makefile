@@ -80,6 +80,7 @@ DOC_DIR = documentation
 
 doc:
 > doxygen $(DOC_DIR)/Doxyfile
+> ln -s $(DOC_DIR)/html/index.html DOCUMENTATION.html
 
 clean:
 > rm -f $(VIEWER_OBJ)
@@ -108,3 +109,4 @@ clean_all: clean
 > rm -f $(wildcard *.html)
 > rm -f $(wildcard *.css)
 > rm -f $(wildcard ./$(GCOV_DIR)/*.html) $(wildcard ./$(GCOV_DIR)/*.css)
+> rm -f $(TEST_TARGET)
