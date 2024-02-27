@@ -126,6 +126,9 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
 
             case row_len_flag:
                 obj->row_format.bytes_len = strtol(optarg, NULL, 10);
+                if (obj->row_format.bytes_len == 0) {
+                    obj->row_format.bytes_len = 1;
+                }
                 break;
 
             default:
