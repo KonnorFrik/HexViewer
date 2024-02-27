@@ -64,6 +64,12 @@ void print_byte_row(page_format* format) {
 }
 
 void decode_print_row(page_format* format) {
+    // VALGRIND WARNING code
+    //string* buffer = string_create();
+    //decode_row(format, buffer);
+    //printf("%s", buffer->string);
+    //string_destroy(buffer);
+
     for (uint8_t count = 0; count < format->row_format.bytes_len; ++count) {
         char symb = decode_symb(format->current_row[count], format);
 
