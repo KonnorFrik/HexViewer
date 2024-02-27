@@ -82,7 +82,9 @@ static void print_help(char* programm_name) {
     printf("| --address-type <type>     - Print address in given type              |\n");
     printf("|                                          (default: hex)              |\n");
     printf("| --non-decode <symb>       - Print given symbol as non-decoding byte  |\n");
-    printf("| --help    - Show this page                                           |\n");
+    printf("| --row-len <number>        - Read and print given count of bytes      |\n");
+    printf("|                                   min/max: 1, 255 (default: 16)      |\n");
+    printf("| --help                    - Show this page                           |\n");
     printf("+----------------------------------------------------------------------+\n");
     //printf("|\n");
 }
