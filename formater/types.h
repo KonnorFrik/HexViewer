@@ -55,6 +55,7 @@ typedef struct page_format_ {
     byte_format byte_format;   ///< See: @link byte_format_
     row_format row_format;     ///< See: @link row_format_
     uint8_t* current_row;      ///< store current 'row_format.bytes_len' bytes from file
+    uint32_t offset;         ///< Start read file from given offset Default: 0
 } page_format;
 
 #endif

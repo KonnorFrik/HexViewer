@@ -26,22 +26,23 @@
 /// @brief Numbers for flags for getopt
 enum cmd_flags_ {
     fake = 0,
-    help_flag,           ///< --help
-    upper_case_flag,     ///< --upper-byte - Print bytes in upper case
-    byte_type_flag,      ///< --byte-type <c, py(python), asm> - Print bytes in given type
-    address_len_flag,    ///< --address-len <number> (min: 1, max: 255) - Print address with given length
-    address_type_flag,   ///< --address-type <hex, dec, oct> - Print address in given type
-    non_decode_flag,     ///< --non-decode <symb> - Print given symbol as non-decoding byte
-    byte_delimiter_flag, ///< --byte-delimiter <symb> - Print given symbol between bytes
+    help_flag,           ///< --help Show help page and exit. Default: NO
+    upper_case_flag,     ///< --upper-byte - Print bytes in upper case. Default: lower
+    byte_type_flag,      ///< --byte-type <c, py(python), asm> - Print bytes in given type. Default: c-type
+    address_len_flag,    ///< --address-len <number> (min: 1, max: 255) - Print address with given length. Default: 16
+    address_type_flag,   ///< --address-type <hex, dec, oct> - Print address in given type. Default: hex
+    non_decode_flag,     ///< --non-decode <symb> - Print given symbol as non-decoding byte. Default: '.'
+    byte_delimiter_flag, ///< --byte-delimiter <symb> - Print given symbol between bytes. Default: ' '
     row_len_flag,        ///< --row-len <number> - Read and print given count of bytes Default: 16
-    strings_flag,        ///< --strings - Print row only if any byte can be printed as symbol
+    strings_flag,        ///< --strings - Print row only if any byte can be printed as symbol. Default: NO
+    offset_flag,         ///< --offset <number> - Start read and print files from given offset. Default: 0
 };
 
-static void page_format_init_default(page_format* obj);
 /* Set default values in page_format object 
  * ! Overwrite object
  * 1:   obj - page_format object ptr for init
  * ret: void */
+static void page_format_init_default(page_format* obj);
 
 page_format* page_format_create() {
     page_format* obj = 0;
@@ -76,6 +77,7 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
         {"non-decode", REQ_ARG, &cmd_flag, non_decode_flag},
         {"byte-delimiter", REQ_ARG, &cmd_flag, byte_delimiter_flag},
         {"row-len", REQ_ARG, &cmd_flag, row_len_flag},
+        {"offset", REQ_ARG, &cmd_flag, offset_flag},
         {0, 0, 0, 0}
     };
 
@@ -112,7 +114,7 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
                 break;
 
             case address_len_flag:
-                obj->row_format.address_len = strtol(optarg, 0, 10);
+                obj->row_format.address_len = strtol(optarg, NULL, 10);
                 break;
 
             case address_type_flag:
@@ -141,6 +143,10 @@ int page_format_init(int argc, char* const* argv, page_format* obj) {
 
             case strings_flag:
                 obj->row_format.strings = 1;
+                break;
+
+            case offset_flag:
+                obj->offset = strtol(optarg, NULL, 10);
                 break;
 
             default:
@@ -173,6 +179,7 @@ static void page_format_init_default(page_format* obj) {
     // [PAGE]
     obj->is_show_header = 1;
     obj->header_every = 0;
+    obj->offset = 0;
 }
 
 void page_format_destroy(page_format* obj) {
