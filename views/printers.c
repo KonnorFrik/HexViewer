@@ -8,6 +8,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "../data/data_processing.h"
+#include "../str_wrap/wrap.h"
 
 /* Apply output rules from page_format obj for converted str
  * 1:   byte_str - string object ptr for modify
@@ -17,15 +18,7 @@ static void apply_byte_format(string* byte_str, page_format* format);
 
 static void apply_byte_format(string* byte_str, page_format* format) {
     if (format->byte_format.is_upper) {
-        size_t ind = 0;
-
-        while (ind < byte_str->length) {
-            if (islower(byte_str->string[ind])) {
-                byte_str->string[ind] ^= 32;
-            }
-
-            ind++;
-        }
+        string_to_upper(byte_str);
     }
 }
 
