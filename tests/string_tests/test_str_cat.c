@@ -1,5 +1,5 @@
 #include "string_tests.h"
-#define NAME "\033[38;5;46m str \033[0m \033[38;5;45m cat \033[0m"
+#define NAME "\033[38;5;46m str \033[0m \033[38;5;45m    cat \033[0m"
 
 START_TEST(str_cat_test_to_empty_1) {
     char* str = "Hello";

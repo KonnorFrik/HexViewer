@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 
 static void safe_string_realloc(string* obj, size_t new_size);
@@ -194,23 +195,61 @@ void string_clear(string* obj) {
     }
 }
 
-//void string_full_destroy(string** obj) {
-    ///* Destroy string object correctly and return new address
-     //* 1:   obj - string object ptr for destroy
-     //* ret: void */
-//
-    //if (soft_is_null(obj)) {
-        //return;
-    //}
-//
-    //if (!soft_is_null(*obj)) {
-        //if (!soft_is_null((*obj)->string)) {
-            //free((*obj)->string);
-            //(*obj)->string = 0;
-            //(*obj)->size = 0;
-            //(*obj)->length = 0;
-        //}
-//
-        //free(*obj);
-    //}
-//}
+size_t str_to_upper(char* str) {
+    size_t count = 0;
+
+    if (str == NULL) {
+        return count;
+    }
+
+    int index = 0;
+
+    while (str[index] != 0) {
+        if (islower(str[index])) {
+            str[index] ^= 32;
+            count++;
+        }
+
+        index++;
+    }
+
+    return count;
+}
+
+size_t str_to_lower(char* str) {
+    size_t count = 0;
+
+    if (str == NULL) {
+        return count;
+    }
+
+    int index = 0;
+
+    while (str[index] != 0) {
+        if (isupper(str[index])) {
+            str[index] ^= 32;
+            count++;
+        }
+        
+        index++;
+    }
+
+    return count;
+}
+
+size_t string_to_lower(string* str) {
+    if (str == NULL) {
+        return 0;
+    }
+
+    return str_to_lower(str->string);
+}
+
+size_t string_to_upper(string* str) {
+    if (str == NULL) {
+        return 0;
+    }
+
+    return str_to_upper(str->string);
+}
+

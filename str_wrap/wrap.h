@@ -88,4 +88,35 @@ size_t str_cat(string* dst, char* src);
  * @return void */
 void string_clear(string* obj);
 
+/**
+ * @brief Convert given C-string to upper-case
+ * @warning Modify input argument
+ * @param[in, out] str C-string for modify
+ * @return count of converted symbols
+ */
+size_t str_to_upper(char* str);
+
+/**
+ * @brief Convert given C-string to lower-case
+ * @warning Modify input argument
+ * @param[in, out] str C-string for modify
+ * @return count of converted symbols
+ */
+size_t str_to_lower(char* str);
+
+/**
+ * @brief Convert given string object to upper-case
+ * @warning Modify input argument
+ * @param[in, out] str C-string for modify
+ * @return count of converted symbols
+ */
+size_t string_to_upper(string* str);
+
+/**
+ * @brief Convert given string object to lower-case
+ * @warning Modify input argument
+ * @param[in, out] str C-string for modify
+ * @return count of converted symbols
+ */
+size_t string_to_lower(string* str);
 #endif

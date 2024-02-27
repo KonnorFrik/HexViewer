@@ -27,6 +27,11 @@ int main() {
     failed += run_test(test_string_destroy());
     failed += run_test(test_string_clear());
 
+    failed += run_test(test_str_to_lower());
+    failed += run_test(test_str_to_upper());
+    failed += run_test(test_string_to_lower());
+    failed += run_test(test_string_to_upper());
+
     printf("\n\t\033[38;2;250;0;0mfailed\033[0m: %d\n", failed);
     printf("\t  END TEST \033[38;5;46mSTRING\033[0m MODULE\n");
 

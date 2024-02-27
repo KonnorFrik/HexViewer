@@ -16,4 +16,9 @@ Suite* test_str_cat();
 Suite* test_string_destroy();
 Suite* test_string_clear();
 
+Suite* test_str_to_lower();
+Suite* test_str_to_upper();
+Suite* test_string_to_lower();
+Suite* test_string_to_upper();
+
 #endif
