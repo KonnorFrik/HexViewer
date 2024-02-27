@@ -12,13 +12,44 @@
 #include <getopt.h>
 #include <stdio.h>
 
+/**
+ * @brief Call needed file printer depends on flags in format
+ * @param[in] filename Filename for open
+ * @param[in] format page_format struct with rules
+ * @return void
+ */
+static void file_printer(char* filename, page_format* format);
+
+/**
+ * @brief Print address, row of bytes, decoded symbols
+ * @param[in] address Current address
+ * @param[in] format page_format object with bytes and rules for print
+ * @return void
+ */
+static void print_content(uint64_t address, page_format* format);
+
+/**
+ * @brief Return size of given file in bytes
+ * @param[in] file File object to measure length
+ * @return len in bytes
+ */
+static size_t file_len(FILE* file);
+
+/**
+ * @brief Set given offset to file if offset less then file len
+ * @param[in,out] file File object for set in
+ * @param[in]     offset Needed offset for start read from
+ * @return status - NO_ERROR, ERROR
+ */
+static int safe_set_offset(FILE* file, uint32_t offset);
+
 /** 
  * @brief Read whole file row by row and print
  * @param[in] filename Filename for print as hex
  * @param[in] format Struct with rules how print file
  * @return void
  */
-static void print_file(char* filename, page_format* format);
+static void print_file(FILE* file, page_format* format);
 
 /** 
  * @brief Read whole file row by row and print rows if bytes in can be decoded to symbols
@@ -26,7 +57,7 @@ static void print_file(char* filename, page_format* format);
  * @param[in] format Struct with rules how print file
  * @return void
  */
-static void print_files_strings(char* filename, page_format* format);
+static void print_files_strings(FILE* file, page_format* format);
 
 /**
  * @brief Print help message
@@ -45,7 +76,6 @@ static void print_usage(char* programm_name);
  * @return Programm status code
  */
 int main(int argc, char* const* argv) {
-//TODO mb compile all modules in one shared obj
     error_code ret_code = NO_ERROR;
 
     page_format* format = 0;
@@ -62,13 +92,8 @@ int main(int argc, char* const* argv) {
             ret_code = CMD_ARG_ERROR;
         }
 
-        void (*printer)(char*, page_format*) = NULL;
-        printer = (format->row_format.strings == 1) ?\
-                  print_files_strings :\
-                  print_file;
-
         for (int index = optind; index < argc; ++index) {
-            printer(argv[index], format);
+            file_printer(argv[index], format);
         }
 
     }
@@ -77,59 +102,80 @@ int main(int argc, char* const* argv) {
     return ret_code;
 }
 
-static void print_files_strings(char* filename, page_format* format) {
+static void file_printer(char* filename, page_format* format) {
     FILE* file = fopen(filename, "r");
+    int status = NO_ERROR;
 
-    if (file != 0) {
-        uint64_t address = 0;
+    if (file != NULL &&
+        (status = safe_set_offset(file, format->offset)) != ERROR) {
+        if (format->row_format.strings == 1) {
+            print_files_strings(file, format);
 
-        while (read_row(file, format) == format->row_format.bytes_len) {
-            for (int i = 0; i < format->row_format.bytes_len; ++i) {
-                if (decode_symb(format->current_row[i], format) != format->row_format.std_symbol) {
-                    printf("|");
-                    print_address(address, format);
-                    printf("  |  ");
-                    print_byte_row(format);
-                    printf("  |  ");
-                    decode_print_row(format);
-                    printf("|\n");
-                    break;
-                }
-            }
-
-            address += format->row_format.bytes_len;
+        } else {
+            print_file(file, format);
         }
 
-        fclose(file);
+    } else if (status == ERROR) {
+        fprintf(stderr, "Given offset: '%u' too big for file: '%s'\tSkip file\n", format->offset, filename);
 
     } else {
         fprintf(stderr, "File: '%s' can't be opened\n", filename);
+    }
+
+    if (file != NULL) {
+        fclose(file);
     }
 }
 
-static void print_file(char* filename, page_format* format) {
-    FILE* file = fopen(filename, "r");
-
-    if (file != 0) {
+static void print_file(FILE* file, page_format* format) {
         uint64_t address = 0;
 
         while (read_row(file, format) == format->row_format.bytes_len) {
-            // TODO make smthng with it '|'
-            printf("|");
-            print_address(address, format);
-            printf("  |  ");
-            print_byte_row(format);
-            printf("  |  ");
-            decode_print_row(format);
-            printf("|\n");
+            print_content(address, format);
             address += format->row_format.bytes_len;
         }
+}
 
-        fclose(file);
+static void print_files_strings(FILE* file, page_format* format) {
+    uint64_t address = 0;
 
-    } else {
-        fprintf(stderr, "File: '%s' can't be opened\n", filename);
+    while (read_row(file, format) == format->row_format.bytes_len) {
+        for (int i = 0; i < format->row_format.bytes_len; ++i) {
+            if (decode_symb(format->current_row[i], format) != format->row_format.std_symbol) {
+                print_content(address, format);
+                break;
+            }
+        }
+
+        address += format->row_format.bytes_len;
     }
+}
+
+static void print_content(uint64_t address, page_format* format) {
+    printf("|");
+    print_address(address, format);
+    printf("  |  ");
+    print_byte_row(format);
+    printf("  |  ");
+    decode_print_row(format);
+    printf("|\n");
+}
+
+static size_t file_len(FILE* file) {
+    long int current = ftell(file);
+    fseek(file, 0, SEEK_END);
+    size_t len = ftell(file);
+    fseek(file, current, SEEK_SET);
+    return len;
+}
+
+static int safe_set_offset(FILE* file, uint32_t offset) {
+    if (file_len(file) < offset) {
+        return ERROR;
+    }
+
+    fseek(file, offset, SEEK_SET);
+    return NO_ERROR;
 }
 
 static void print_help(char* programm_name) {
