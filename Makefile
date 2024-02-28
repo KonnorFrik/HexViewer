@@ -4,12 +4,12 @@
 CC = gcc
 LOCAL_GCOVR = gcovr
 
-CFLAGS = -std=c11 -Wall -Wextra #-Werror
-LDLIBS = -lncurses `pkg-config --cflags --libs check` -lc
+CFLAGS = -std=c11 -Wall -Wextra -Werror
+LDLIBS = `pkg-config --cflags --libs check`
 TEST_FLAGS = `pkg-config --cflags --libs check` -O0 -lc -lm -lgcov --coverage
 
 # main target
-VIEWER_SRC_DIRS = . $(FORMATER_SRC_DIRS) views data $(STRWRAP_SRC_DIRS) $(ERR_HANDLER_SRC_DIRS)
+VIEWER_SRC_DIRS = src $(FORMATER_SRC_DIRS) views data $(STRWRAP_SRC_DIRS) $(ERR_HANDLER_SRC_DIRS)
 VIEWER_SRC = $(foreach dir, $(VIEWER_SRC_DIRS), $(wildcard $(dir)/*.c))
 VIEWER_OBJ = $(VIEWER_SRC:.c=.o)
 VIEWER_TARGET = hexviewer
@@ -55,6 +55,7 @@ all: $(TARGETS) test gcov_report clean
 rebuild: clean_all all
 
 $(VIEWER_TARGET): $(VIEWER_OBJ)
+> $(CC) $(CFLAGS) $(LDLIBS) $^ -o $@
 
 $(STRWRAP_TARGET): $(STRWRAP_OBJ) $(ERR_HANDLER_OBJ)
 > $(AR) rcs $@ $(STRWRAP_OBJ)
@@ -90,14 +91,16 @@ clean:
  					   $(FORMATER_TEST_SRC_DIRS)\
  					   $(FORMATER_SRC_DIRS)\
 	                   $(STRWRAP_SRC_DIRS)\
-					   $(STRWRAP_TEST_SRC_DIRS),\
+					   $(STRWRAP_TEST_SRC_DIRS)\
+					   .,\
 					   $(wildcard $(dir)/*.gcda))
 
 > rm -f $(foreach dir, $(VIEWER_SRC_DIRS)\
  					   $(FORMATER_TEST_SRC_DIRS)\
  					   $(FORMATER_SRC_DIRS)\
            	           $(STRWRAP_SRC_DIRS)\
-	                   $(STRWRAP_TEST_SRC_DIRS),\
+	                   $(STRWRAP_TEST_SRC_DIRS)\
+					   .,\
 					   $(wildcard $(dir)/*.gcno))
 
 clean_all: clean
