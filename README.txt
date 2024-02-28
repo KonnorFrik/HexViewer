@@ -1,8 +1,10 @@
 +------------------------------------------------------------------------------+
 |                                 Hex viewer                                   |
-|  Programm for print byte's from file as hexadecimal number in stdout         |
+|                                                                              |
+| Programm for print byte's from file as hexadecimal number in stdout          |
 |------------------------------------------------------------------------------|
 |                                   Build                                      |
+|                                                                              |
 | run "make" or "make hexviewer" for compile                                   |
 |------------------------------------------------------------------------------|
 |                                   Flags                                      |
@@ -33,4 +35,4 @@
 |                                  <number> - can be only decimal number       |
 |                                                                              |
 | --help                    - Show help page                                   |
-|------------------------------------------------------------------------------|
++------------------------------------------------------------------------------+
