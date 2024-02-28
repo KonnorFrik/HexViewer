@@ -128,7 +128,7 @@ static void file_printer(char* filename, page_format* format) {
 }
 
 static void print_file(FILE* file, page_format* format) {
-        uint64_t address = 0;
+        uint64_t address = format->offset;
 
         while (read_row(file, format) == format->row_format.bytes_len) {
             print_content(address, format);
@@ -137,7 +137,7 @@ static void print_file(FILE* file, page_format* format) {
 }
 
 static void print_files_strings(FILE* file, page_format* format) {
-    uint64_t address = 0;
+    uint64_t address = format->offset;
 
     while (read_row(file, format) == format->row_format.bytes_len) {
         for (int i = 0; i < format->row_format.bytes_len; ++i) {
