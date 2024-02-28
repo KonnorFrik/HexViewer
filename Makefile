@@ -1,5 +1,5 @@
 .RECIPEPREFIX = >
-.PHONY: $(VIEWER_TARGET)
+.PHONY: $(VIEWER_TARGET) clean
 
 CC = gcc
 LOCAL_GCOVR = gcovr
@@ -55,7 +55,6 @@ all: $(TARGETS) test gcov_report clean
 rebuild: clean_all all
 
 $(VIEWER_TARGET): $(VIEWER_OBJ)
-#> $(CC) $(CFLAGS) $(VIEWER_OBJ) -o $@
 
 $(STRWRAP_TARGET): $(STRWRAP_OBJ) $(ERR_HANDLER_OBJ)
 > $(AR) rcs $@ $(STRWRAP_OBJ)
